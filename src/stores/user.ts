@@ -6,4 +6,17 @@ export const useUser = defineStore('user', {
       current: null,
     }
   },
+  getters: {
+    isAuth(state) {
+      return state.current !== null
+    }
+  },
+  actions: {
+    setUser(user: any) {
+      this.current = user
+    },
+    logout() {
+      this.current = null
+    }
+  }
 })

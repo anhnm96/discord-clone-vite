@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-primary;
+  }
+}
+
+@layer components {
+  .px-content {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+}
