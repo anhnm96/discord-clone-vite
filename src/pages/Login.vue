@@ -105,7 +105,7 @@ export default defineComponent({
           userStore.setUser(data)
           router.push('/channels/me')
         }
-      } catch (err) {
+      } catch (err: any) {
         if (err?.response?.status === 401) {
           setErrors({ password: 'Invalid credentials' })
         } else if (err?.response?.status === 404) {

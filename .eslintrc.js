@@ -11,6 +11,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
     '@vue/typescript/recommended',
+    'prettier',
   ],
   rules: {
     'vue/one-component-per-file': 'off',

@@ -8,7 +8,7 @@
           alt="logo"
         >
       </div>
-      <div class="px-content pt-4 pb-8 space-y-4 bg-[#36393e] rounded-md">
+      <div class="pt-4 pb-8 space-y-4 rounded-md px-content bg-primary">
         <h2 class="text-2xl font-semibold text-center">
           Welcome to Discord
         </h2>
@@ -28,7 +28,7 @@
                 id="email"
                 name="email"
                 type="email"
-                class="px-4 py-2 bg-[#303338] border border-black rounded"
+                class="px-4 py-2 bg-black border border-black rounded bg-opacity-10 border-opacity-30"
                 :class="[errors.email && 'border-red-400']"
               />
               <ErrorMessage
@@ -45,7 +45,7 @@
                 id="username"
                 name="username"
                 type="text"
-                class="px-4 py-2 bg-[#303338] border border-black rounded"
+                class="px-4 py-2 bg-black border border-black rounded bg-opacity-10 border-opacity-30"
                 :class="[errors.username && 'border-red-400']"
               />
               <ErrorMessage
@@ -62,7 +62,7 @@
                 id="password"
                 name="password"
                 type="password"
-                class="px-4 py-2 bg-[#303338] border border-black rounded"
+                class="px-4 py-2 bg-black border border-black rounded bg-opacity-10 border-opacity-30"
                 :class="[errors.password && 'border-red-400']"
               />
               <ErrorMessage
@@ -116,7 +116,7 @@ export default defineComponent({
           userStore.setUser(data)
           router.push('/channels/me')
         }
-      } catch (err) {
+      } catch (err: any) {
         if (err?.response?.data?.errors) {
           setErrors(toErrorMap(err))
         } else {

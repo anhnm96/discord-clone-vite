@@ -1,13 +1,25 @@
 <template>
-  <div class="bg-primary">
+  <div class="bg-tertiary">
     <router-view />
+    <VueQueryDevTools />
   </div>
 </template>
 
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+<script lang="ts" setup>
+import { useUser } from '@/stores/user'
+import { useQueryProvider } from 'vue-query'
+import { VueQueryDevTools } from 'vue-query/devtools'
+
+// check login
+let user = localStorage.getItem('user') || ''
+if (user) {
+  user = JSON.parse(user)
+  const userStore = useUser()
+  userStore.setUser(user)
+}
+
+// setup vue-query
+useQueryProvider()
 </script>
 
-<style>
-</style>
+<style></style>
