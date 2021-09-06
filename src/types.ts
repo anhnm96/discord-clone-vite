@@ -7,3 +7,11 @@ export interface User {
   createdAt: string
   updatedAt: string
 }
+
+
+export interface FriendRequest {
+  id: string
+  username: string
+  image: string
+  type: number
+}
