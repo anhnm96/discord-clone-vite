@@ -85,7 +85,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import { Form, Field, ErrorMessage } from 'vee-validate'
 import { LoginSchema } from '@/validation/auth'
 import { login } from '@/api/handler/auth'
 import { toErrorMap } from '@/helpers'
@@ -93,7 +92,6 @@ import { useUser } from '@/stores/user'
 
 export default defineComponent({
   name: 'PageLogin',
-  components: { Form, Field, ErrorMessage },
   setup() {
     const userStore = useUser()
     const router = useRouter()

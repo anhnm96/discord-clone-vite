@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         purple: '#5865F2',
+        'purple-dark': 'rgb(73, 84, 202)',
         gray: colors.gray,
       },
       textColor: {

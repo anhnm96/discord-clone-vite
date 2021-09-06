@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia'
-import pinia from '@/plugins/pinia'
+import { User } from '@/types'
+
+type UserState = {
+  current: User | null
+}
 
 export const useUser = defineStore('user', {
   state: () => {
     return {
       current: null,
-    }
+    } as UserState
   },
   getters: {
     isAuth(state) {
@@ -15,14 +19,12 @@ export const useUser = defineStore('user', {
   actions: {
     setUser(user: any) {
       this.current = user
-      localStorage.removeItem('user')
+      localStorage.setItem('user', JSON.stringify(user))
     },
     logout() {
       this.current = null
+      localStorage.removeItem('user')
     },
   },
 })
 
-useUser(pinia).$subscribe((_mutation, state) => {
-  localStorage.setItem('user', JSON.stringify(state))
-})
