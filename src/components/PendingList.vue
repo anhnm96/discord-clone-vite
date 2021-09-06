@@ -1,16 +1,15 @@
 <template>
-  <div v-if="!isLoading">
+  <div v-if="requests">
     <div
       v-if="requests.length === 0"
       class="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
     >
       <p class="select-none">There are no pending friend requests</p>
     </div>
-    <ul
-      v-if="requests.length > 0"
-      class="space-y-2"
-    >
-      <p class="text-sm font-semibold">Pending - {{requests.length}}</p>
+    <ul v-if="requests.length > 0" class="space-y-2">
+      <p class="text-sm font-semibold uppercase">
+        Pending - {{ requests.length }}
+      </p>
       <li
         v-for="request in requests"
         :key="request.id"
@@ -22,24 +21,30 @@
               class="w-8 h-8 rounded-full"
               :src="request.image"
               alt="avatar"
-            >
+            />
             <div>
-              <p>{{request.username}}</p>
-              <p class="text-xs">{{request.type === 1 ? 'Incoming Friend Request' : 'Outgoing Friend Request'}}</p>
+              <p class="font-semibold">{{ request.username }}</p>
+              <p class="text-sm font-medium">
+                {{
+                  request.type === 1
+                    ? 'Incoming Friend Request'
+                    : 'Outgoing Friend Request'
+                }}
+              </p>
             </div>
           </div>
           <div class="flex space-x-2">
             <button
               v-if="request.type === 1"
               aria-label="accept"
-              class="grid w-10 h-10 rounded-full hover:bg-gray-600 place-items-center bg-modifier-selected"
+              class="grid w-10 h-10 rounded-full  hover:bg-gray-600 place-items-center bg-modifier-selected"
               @click="acceptRequest(request)"
             >
               <CheckIcon class="w-5 h-5" />
             </button>
             <button
               aria-label="decline"
-              class="grid w-10 h-10 rounded-full hover:bg-gray-600 place-items-center bg-modifier-selected"
+              class="grid w-10 h-10 rounded-full  hover:bg-gray-600 place-items-center bg-modifier-selected"
               @click="declineRequest(request)"
             >
               <XIcon class="w-5 h-5" />
@@ -68,7 +73,7 @@ export default defineComponent({
   name: 'PendingList',
   components: { CheckIcon, XIcon },
   setup() {
-    const { data: requests, isLoading } = useQuery('requests', () =>
+    const { data: requests } = useQuery<FriendRequest[]>('requests', () =>
       getPendingRequests().then((res) => res.data)
     )
     // reset requestCount when pending list is shown
@@ -97,10 +102,9 @@ export default defineComponent({
       }
     }
 
-    return { requests, isLoading, acceptRequest, declineRequest }
+    return { requests, acceptRequest, declineRequest }
   },
 })
 </script>
 
-<style>
-</style>
+<style></style>
