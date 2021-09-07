@@ -64,6 +64,7 @@
             <button
               aria-label="more"
               class="grid w-10 h-10 rounded-full  hover:bg-gray-600 place-items-center bg-modifier-selected"
+              @click="handleRemoveFriend(friend)"
             >
               <DotsVerticalIcon class="w-5 h-5" />
             </button>
@@ -76,21 +77,38 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useQuery } from 'vue-query'
-import { getFriends } from '@/api/handler/account'
+import { useQuery, useQueryClient } from 'vue-query'
+import { getFriends, removeFriend } from '@/api/handler/account'
 import { fKey } from '@/helpers'
 import { DotsVerticalIcon, ChatAltIcon } from '@heroicons/vue/solid'
 import { User } from '@/types'
+import { useDialog } from '@/components/base/Dialog/useDialog'
 
 export default defineComponent({
   name: 'FriendsList',
   components: { DotsVerticalIcon, ChatAltIcon },
   setup() {
+    const cache = useQueryClient()
+    const { open } = useDialog()
     const { data: friendsList } = useQuery<User[]>(fKey, () =>
       getFriends().then((res) => res.data)
     )
 
-    return { friendsList }
+    async function handleRemoveFriend(friend: User) {
+      const answer = await open({
+        title: 'Remove Friend',
+        content: `Are you sure you want to permanenty remove ${friend.username} from your friends?`,
+      })
+      if (answer === 'cancel') return
+      const { data } = await removeFriend(friend.id)
+      if (data) {
+        cache.setQueryData(fKey, (friends: any) => {
+          return friends.filter((f: User) => f.id !== friend.id)
+        })
+      }
+    }
+
+    return { friendsList, handleRemoveFriend }
   },
 })
 </script>

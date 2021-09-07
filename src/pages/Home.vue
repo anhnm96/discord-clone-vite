@@ -142,6 +142,7 @@
     </div>
     <Settings v-if="showSettings" @close="showSettings = false" />
     <AddFriendModal v-model="showAddFriendModal" />
+    <Dialog />
   </div>
 </template>
 
@@ -160,6 +161,7 @@ import Settings from '@/components/Settings.vue'
 import AddFriendModal from '@/components/modals/AddFriendModal.vue'
 import PendingList from '@/components/PendingList.vue'
 import FriendsList from '@/components/FriendsList.vue'
+import Dialog from '@/components/base/Dialog/Dialog.vue'
 
 export default defineComponent({
   name: 'PageHome',
@@ -169,6 +171,7 @@ export default defineComponent({
     NavChannel,
     PendingList,
     FriendsList,
+    Dialog,
     PlusIcon,
     UsersIcon,
     MicrophoneIcon,

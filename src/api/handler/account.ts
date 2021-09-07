@@ -9,6 +9,8 @@ export const sendFriendRequest = (id: string) =>
 
 export const getPendingRequests = () => api.get('/account/me/pending')
 
+export const removeFriend = (id: string) => api.delete(`/account/${id}/friend`)
+
 export const acceptFriendRequest = (id: string) =>
   api.post(`/account/${id}/friend/accept`)
 
