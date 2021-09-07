@@ -14,6 +14,7 @@
         v-for="friend in friendsList"
         :key="friend.id"
         class="p-3 rounded-md hover:bg-secondary"
+        @click="getDMChannel(friend)"
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
@@ -77,9 +78,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 import { useQuery, useQueryClient } from 'vue-query'
 import { getFriends, removeFriend } from '@/api/handler/account'
-import { fKey } from '@/helpers'
+import { getOrCreateDirectMessage } from '@/api/handler/dm'
+import { fKey, dmKey } from '@/helpers'
 import { DotsVerticalIcon, ChatAltIcon } from '@heroicons/vue/solid'
 import { User } from '@/types'
 import { useDialog } from '@/components/base/Dialog/useDialog'
@@ -88,6 +91,7 @@ export default defineComponent({
   name: 'FriendsList',
   components: { DotsVerticalIcon, ChatAltIcon },
   setup() {
+    const router = useRouter()
     const cache = useQueryClient()
     const { open } = useDialog()
     const { data: friendsList } = useQuery<User[]>(fKey, () =>
@@ -108,7 +112,16 @@ export default defineComponent({
       }
     }
 
-    return { friendsList, handleRemoveFriend }
+    async function getDMChannel(friend: User) {
+      const { data } = await getOrCreateDirectMessage(friend.id)
+
+      if (data) {
+        cache.invalidateQueries(dmKey)
+        router.push(`/channels/me/${data.id}`)
+      }
+    }
+
+    return { friendsList, handleRemoveFriend, getDMChannel }
   },
 })
 </script>

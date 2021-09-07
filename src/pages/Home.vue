@@ -28,10 +28,13 @@
     <div class="flex flex-grow">
       <div class="flex flex-col flex-shrink-0 w-60">
         <nav class="flex-grow p-2 bg-secondary">
-          <div class="flex items-center px-3 py-3 space-x-3 rounded bg-active">
+          <router-link
+            to="/channels/me"
+            class="flex items-center px-3 py-3 space-x-3 rounded bg-active"
+          >
             <UsersIcon class="w-6 h-6" />
             <p class="font-semibold">Friends</p>
-          </div>
+          </router-link>
           <h2
             class="flex items-center justify-between mt-4 text-xs font-bold text-gray-400 uppercase  hover:text-gray-300"
           >
@@ -78,70 +81,9 @@
           </div>
         </section>
       </div>
-      <div class="flex flex-col flex-grow bg-primary">
-        <section class="h-12 shadow-md">
-          <div class="flex items-center h-full p-2">
-            <div class="flex px-2 space-x-2">
-              <UsersIcon class="w-6 h-6" />
-              <h3 class="font-bold">Friends</h3>
-            </div>
-            <div class="bg-divider w-0.25 h-6" />
-            <div class="flex space-x-2">
-              <div class="py-0.5 px-2" @click="activeTab = 'Online'">
-                Online
-              </div>
-              <div class="py-0.5 px-2" @click="activeTab = 'All'">All</div>
-              <div class="py-0.5 px-2" @click="activeTab = 'Pending'">
-                Pending
-              </div>
-              <button
-                class="py-0.5 px-2 bg-green-600 text-white rounded"
-                @click="showAddFriendModal = true"
-              >
-                Add friend
-              </button>
-            </div>
-          </div>
-        </section>
-        <main class="flex flex-col flex-auto">
-          <div class="relative flex-auto px-4 py-4">
-            <PendingList v-if="activeTab === 'Pending'" />
-            <FriendsList v-else-if="activeTab === 'All'" />
-            <!-- intro -->
-            <div v-else class="space-y-2">
-              <div>
-                <img
-                  class="w-20 h-20 rounded-full"
-                  src="/src/assets/discord-gray.png"
-                  alt="logo"
-                />
-              </div>
-              <h1 class="text-4xl font-bold truncate select-none">
-                Channel name
-              </h1>
-              <p class="select-none">
-                This is the beginning of your direct message history with
-                <b>Channel name</b>
-              </p>
-            </div>
-          </div>
-          <div class="flex-shrink-0 px-4 pb-6">
-            <div class="flex rounded-lg bg-textarea">
-              <button
-                class="self-start px-4 py-2 text-gray-400 hover:text-gray-300"
-              >
-                <PlusCircleIcon class="w-6 h-6" />
-              </button>
-              <textarea
-                class="flex-auto py-2 pr-2 bg-transparent outline-none resize-none "
-              ></textarea>
-            </div>
-          </div>
-        </main>
-      </div>
+      <router-view />
     </div>
     <Settings v-if="showSettings" @close="showSettings = false" />
-    <AddFriendModal v-model="showAddFriendModal" />
     <Dialog />
   </div>
 </template>
@@ -154,37 +96,27 @@ import {
   MicrophoneIcon,
   VolumeUpIcon,
   CogIcon,
-  PlusCircleIcon,
 } from '@heroicons/vue/solid'
 import NavChannel from '@/components/NavChannel.vue'
 import Settings from '@/components/Settings.vue'
-import AddFriendModal from '@/components/modals/AddFriendModal.vue'
-import PendingList from '@/components/PendingList.vue'
-import FriendsList from '@/components/FriendsList.vue'
 import Dialog from '@/components/base/Dialog/Dialog.vue'
 
 export default defineComponent({
   name: 'PageHome',
   components: {
     Settings,
-    AddFriendModal,
     NavChannel,
-    PendingList,
-    FriendsList,
     Dialog,
     PlusIcon,
     UsersIcon,
     MicrophoneIcon,
     VolumeUpIcon,
     CogIcon,
-    PlusCircleIcon,
   },
   setup() {
     const showSettings = ref(false)
-    const showAddFriendModal = ref(false)
-    const activeTab = ref('All')
 
-    return { showSettings, showAddFriendModal, activeTab }
+    return { showSettings }
   },
 })
 </script>

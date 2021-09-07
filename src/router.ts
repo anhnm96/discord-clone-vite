@@ -30,7 +30,7 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/channels/me',
+    path: '/channels',
     name: 'Home',
     component: () => import('./pages/Home.vue'),
     meta: {
@@ -39,6 +39,13 @@ const routes: RouteRecordRaw[] = [
         noAccessRedirect: '/login',
       },
     },
+    children: [
+      { path: 'me', component: () => import('./pages/Channels/Home.vue') },
+      {
+        path: 'me/:id',
+        component: () => import('./pages/Channels/Channel.vue'),
+      },
+    ],
   },
 ]
 

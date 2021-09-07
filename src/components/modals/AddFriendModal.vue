@@ -37,8 +37,9 @@
                 disabled
               >
               <button
-                class="absolute px-2 py-1 text-white transition -translate-y-1/2 rounded bg-purple hover:bg-purple-dark right-1 top-1/2"
-                :class="[hasCopied && 'bg-green-500']"
+                type="button"
+                class="absolute px-2 py-1 text-white transition -translate-y-1/2 rounded right-1 top-1/2"
+                :class="[hasCopied ? 'bg-green-500' : 'bg-purple hover:bg-purple-dark']"
                 @click="copyToClipboard"
               >{{ hasCopied ? 'Copied' : 'Copy'}}</button>
             </div>
