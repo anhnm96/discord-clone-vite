@@ -4,8 +4,10 @@ import './assets/index.css'
 import router from './router'
 import pinia from './plugins/pinia'
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import Avatar from '@/components/base/Avatar.vue'
 
 const app = createApp(App)
+app.component('Avatar', Avatar)
 app.component('Form', Form)
 app.component('Field', Field)
 app.component('ErrorMessage', ErrorMessage)

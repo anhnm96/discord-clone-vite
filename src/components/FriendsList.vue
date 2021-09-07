@@ -18,34 +18,7 @@
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <div class="relative">
-              <img
-                class="w-8 h-8 rounded-full"
-                :src="friend.image"
-                alt="avatar"
-              />
-              <div
-                class="absolute grid w-4 h-4 rounded-full  -bottom-1/4 -right-1/4 -translate-y-1/3 -translate-x-1/3 place-items-center bg-primary"
-              >
-                <div
-                  v-if="friend.isOnline"
-                  class="w-2.5 h-2.5 rounded-full bg-green-500"
-                ></div>
-                <div
-                  v-else
-                  class="
-                    w-2.5
-                    h-2.5
-                    rounded-full
-                    bg-gray-400
-                    grid
-                    place-items-center
-                  "
-                >
-                  <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                </div>
-              </div>
-            </div>
+            <Avatar :img="friend.image" :is-online="friend.isOnline" />
             <div>
               <p class="font-semibold leading-none text-white">
                 {{ friend.username }}
@@ -65,7 +38,7 @@
             <button
               aria-label="more"
               class="grid w-10 h-10 rounded-full  hover:bg-gray-600 place-items-center bg-modifier-selected"
-              @click="handleRemoveFriend(friend)"
+              @click.stop="handleRemoveFriend(friend)"
             >
               <DotsVerticalIcon class="w-5 h-5" />
             </button>

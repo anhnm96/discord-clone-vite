@@ -6,12 +6,17 @@ export interface User {
   isOnline: boolean
   createdAt: string
   updatedAt: string
+  isFriend?: boolean
 }
-
 
 export interface FriendRequest {
   id: string
   username: string
   image: string
   type: number
+}
+
+export interface DirectMessage {
+  id: string
+  user: User
 }

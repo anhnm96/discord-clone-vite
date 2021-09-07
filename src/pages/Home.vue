@@ -45,37 +45,29 @@
             <li
               v-for="dm in dms"
               :key="dm.id"
-              class="px-2 py-1 group hover:bg-modifier-hover hover:text-hover"
+              class="flex justify-between px-2 py-1  group hover:bg-modifier-hover hover:text-hover"
             >
               <div class="flex items-center space-x-2">
-                <div>
-                  <img
-                    class="w-8 h-8 rounded-full"
-                    :src="dm.user.image"
-                    alt="avatar"
-                  />
-                </div>
-                <p class="truncate group">{{ dm.user.username }}</p>
+                <Avatar :img="dm.user.image" :is-online="dm.user.isOnline" />
+                <p class="truncate">{{ dm.user.username }}</p>
               </div>
+              <button
+                class="hidden group-hover:block"
+                aria-label="remove dm"
+                @click="handleCloseDM(dm)"
+              >
+                <XIcon class="w-4 h-4" />
+              </button>
             </li>
           </ul>
         </nav>
         <section class="bg-secondary-alt">
           <div class="flex items-center px-2 space-x-2 h-13">
-            <div class="relative grid flex-shrink-0 w-8 h-8">
-              <img
-                class="rounded-full"
-                src="/src/assets/discord.png"
-                alt="avatar"
-              />
-              <div
-                class="absolute grid w-4 h-4 rounded-full  -translate-x-1/3 -translate-y-1/3 -bottom-1/4 -right-1/4 bg-secondary-alt place-items-center"
-              >
-                <span class="rounded-full w-2.5 h-2.5 bg-green-500" />
-              </div>
-            </div>
+            <Avatar :img="userStore.current?.image" :is-online="true" />
             <div class="flex-grow overflow-hidden">
-              <p class="text-sm font-bold text-white truncate">Light</p>
+              <p class="text-sm font-bold text-white truncate">
+                {{ userStore.current?.username }}
+              </p>
             </div>
             <div class="flex flex-shrink-0">
               <button
@@ -108,19 +100,22 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { PlusIcon } from '@heroicons/vue/outline'
+import { useRouter, useRoute } from 'vue-router'
+import { PlusIcon, XIcon } from '@heroicons/vue/outline'
 import {
   UsersIcon,
   MicrophoneIcon,
   VolumeUpIcon,
   CogIcon,
 } from '@heroicons/vue/solid'
-import { useQuery } from 'vue-query'
+import { useQuery, useQueryClient } from 'vue-query'
 import { dmKey } from '@/helpers'
-import { getUserDMs } from '@/api/handler/dm'
+import { getUserDMs, closeDirectMessage } from '@/api/handler/dm'
 import NavChannel from '@/components/NavChannel.vue'
 import Settings from '@/components/Settings.vue'
 import Dialog from '@/components/base/Dialog/Dialog.vue'
+import { useUser } from '@/stores/user'
+import { DirectMessage } from '@/types'
 
 export default defineComponent({
   name: 'PageHome',
@@ -133,14 +128,29 @@ export default defineComponent({
     MicrophoneIcon,
     VolumeUpIcon,
     CogIcon,
+    XIcon,
   },
   setup() {
+    const cache = useQueryClient()
+    const router = useRouter()
+    const route = useRoute()
+    const userStore = useUser()
     const showSettings = ref(false)
-    const { data: dms } = useQuery(dmKey, () =>
+    const { data: dms } = useQuery<DirectMessage[]>(dmKey, () =>
       getUserDMs().then((res) => res.data)
     )
 
-    return { showSettings, dms }
+    async function handleCloseDM(dm: DirectMessage) {
+      await closeDirectMessage(dm.id)
+      cache.setQueryData(dmKey, (d: any) => {
+        return d?.filter((channel: DirectMessage) => channel.id !== dm.id)
+      })
+      if (route.path === `/channels/me/${dm.id}`) {
+        router.replace('/channels/me')
+      }
+    }
+
+    return { userStore, showSettings, dms, handleCloseDM }
   },
 })
 </script>
