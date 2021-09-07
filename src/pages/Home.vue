@@ -41,6 +41,24 @@
             <span>Direct Messages</span>
             <PlusIcon class="w-4 h-4" />
           </h2>
+          <ul class="mt-2">
+            <li
+              v-for="dm in dms"
+              :key="dm.id"
+              class="px-2 py-1 group hover:bg-modifier-hover hover:text-hover"
+            >
+              <div class="flex items-center space-x-2">
+                <div>
+                  <img
+                    class="w-8 h-8 rounded-full"
+                    :src="dm.user.image"
+                    alt="avatar"
+                  />
+                </div>
+                <p class="truncate group">{{ dm.user.username }}</p>
+              </div>
+            </li>
+          </ul>
         </nav>
         <section class="bg-secondary-alt">
           <div class="flex items-center px-2 space-x-2 h-13">
@@ -97,6 +115,9 @@ import {
   VolumeUpIcon,
   CogIcon,
 } from '@heroicons/vue/solid'
+import { useQuery } from 'vue-query'
+import { dmKey } from '@/helpers'
+import { getUserDMs } from '@/api/handler/dm'
 import NavChannel from '@/components/NavChannel.vue'
 import Settings from '@/components/Settings.vue'
 import Dialog from '@/components/base/Dialog/Dialog.vue'
@@ -115,8 +136,11 @@ export default defineComponent({
   },
   setup() {
     const showSettings = ref(false)
+    const { data: dms } = useQuery(dmKey, () =>
+      getUserDMs().then((res) => res.data)
+    )
 
-    return { showSettings }
+    return { showSettings, dms }
   },
 })
 </script>
