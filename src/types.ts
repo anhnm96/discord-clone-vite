@@ -18,5 +18,16 @@ export interface FriendRequest {
 
 export interface DirectMessage {
   id: string
+  name?: string
+  user: User
+}
+
+export interface Message {
+  id: string
+  text: string
+  filetype?: any
+  url?: string
+  createdAt: string
+  updatedAt: string
   user: User
 }

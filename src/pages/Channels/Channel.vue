@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between h-full px-4 py-2">
         <p class="flex items-center space-x-2">
           <span class="tex"><AtSymbolIcon class="w-6 h-6" /></span>
-          <span>500bros-phuoc anh</span>
+          <span>{{ channel?.user.username }}</span>
           <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span>
         </p>
         <div class="flex space-x-4">
@@ -34,18 +34,11 @@
             <b>Channel name</b>
           </p>
         </div>
+        <div class="my-4 bg-divider h-0.25"></div>
+        <MessagesList />
       </div>
       <div class="flex-shrink-0 px-4 pb-6">
-        <div class="flex rounded-lg bg-textarea">
-          <button
-            class="self-start px-4 py-2 text-gray-400 hover:text-gray-300"
-          >
-            <PlusCircleIcon class="w-6 h-6" />
-          </button>
-          <textarea
-            class="flex-auto py-2 pr-2 bg-transparent outline-none resize-none"
-          ></textarea>
-        </div>
+        <MessageInput />
       </div>
     </main>
   </div>
@@ -53,12 +46,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useRoute } from 'vue-router'
 import {
   PhoneOutgoingIcon,
   AtSymbolIcon,
   VideoCameraIcon,
-  PlusCircleIcon,
 } from '@heroicons/vue/solid'
+import { useGetCurrentDM } from '@/hooks'
+import MessagesList from '@/components/MessagesList.vue'
+import MessageInput from '@/components/MessageInput.vue'
 
 export default defineComponent({
   name: 'Channel',
@@ -66,7 +62,15 @@ export default defineComponent({
     PhoneOutgoingIcon,
     AtSymbolIcon,
     VideoCameraIcon,
-    PlusCircleIcon,
+    MessageInput,
+    MessagesList,
+  },
+  setup() {
+    const route = useRoute()
+    const channelId = route.params.id as string
+    const channel = useGetCurrentDM(channelId)
+
+    return { channel }
   },
 })
 </script>
