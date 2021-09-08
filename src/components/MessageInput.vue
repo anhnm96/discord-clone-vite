@@ -52,6 +52,7 @@ export default defineComponent({
     watch(text, () => {
       if (!isTyping.value) {
         isTyping.value = true
+        console.log('startTyping')
         socket.emit('startTyping', channelId, userStore.current?.username)
         timeout = setTimeout(() => {
           isTyping.value = false

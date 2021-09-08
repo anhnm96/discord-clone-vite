@@ -11,8 +11,8 @@ export const useChannel = defineStore('channel', {
     } as ChannelState
   },
   actions: {
-    reset() {
-      this.typingUsers = []
+    addTyping(username: string) {
+      this.typingUsers.push(username)
     },
     removeTyping(username: string) {
       this.typingUsers = this.typingUsers.filter((u) => u !== username)
