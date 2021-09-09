@@ -18,9 +18,9 @@
       </div>
     </section>
     <main class="flex flex-col flex-auto">
-      <div class="relative flex-auto p-4">
+      <div class="relative flex flex-col justify-end flex-auto py-4">
         <!-- intro -->
-        <div class="space-y-2">
+        <div class="px-4 space-y-2">
           <div>
             <img
               class="w-20 h-20 rounded-full"
@@ -34,7 +34,7 @@
             <b>Channel name</b>
           </p>
         </div>
-        <div class="my-4 bg-divider h-0.25"></div>
+        <div class="m-4 bg-divider h-0.25"></div>
         <MessagesList />
       </div>
       <div class="flex-shrink-0 px-4 pb-6">

@@ -1,23 +1,24 @@
 <template>
   <div v-if="isLoading">Loading...</div>
   <section v-if="messages">
-    <div v-for="(message, index) in messages" :key="message.id" class="px-14">
-      <MessageItem
-        :message="message"
-        :show-header="!checkMessageWithin(message, messages[index - 1])"
-      />
-    </div>
+    <MessageItem
+      v-for="(message, index) in messages"
+      :key="message.id"
+      :message="message"
+      :show-header="!checkMessageCompact(message, messages[index - 1])"
+    />
   </section>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useInfiniteQuery } from 'vue-query'
 import { getMessages } from '@/api/handler/messages'
 import MessageItem from './MessageItem.vue'
 import { Message } from '@/types'
 import useMessageSocket from '@/api/ws/useMessageSocket'
+import { getTimeDifference } from '@/helpers'
 
 export default defineComponent({
   name: 'MessageList',
@@ -44,18 +45,21 @@ export default defineComponent({
             : '',
       }
     )
+    watch(data, (newVal) => {
+      console.log(newVal)
+    })
     const messages = computed(() => {
       console.log(data.value)
-      return data.value?.pages.flatMap((p: any) => p)
+      return data.value?.pages.flatMap((p: any) => p).reverse()
     })
 
-    function checkMessageWithin(m1: Message, m2: Message) {
+    function checkMessageCompact(m1: Message, m2: Message) {
       if (!m1 || !m2) return
       if (m1.user.id !== m2.user.id) return false
-      return true
+      return getTimeDifference(m1.createdAt, m2.createdAt) <= 5
     }
 
-    return { isLoading, messages, checkMessageWithin }
+    return { isLoading, messages, checkMessageCompact }
   },
 })
 </script>

@@ -1,18 +1,47 @@
 <template>
-  <div v-if="showHeader" class="relative flex items-start">
-    <img
-      class="absolute top-0 w-10 h-10 -translate-x-full rounded-full -left-4"
-      :src="message.user.image"
-    />
-    <p class="font-medium leading-none text-white">
-      {{ message.user.username }}
+  <div>
+    <div
+      v-if="showHeader"
+      class="relative flex items-start mb-1 px-18"
+      :class="[showHeader && 'mt-4']"
+    >
+      <img
+        class="absolute top-0 w-10 h-10 rounded-full left-4"
+        :src="message.user.image"
+      />
+      <div class="flex items-baseline space-x-2">
+        <p class="font-medium leading-none text-white">
+          {{ message.user.username }}
+        </p>
+        <p class="text-xs text-muted">{{ getTime(message.createdAt) }}</p>
+      </div>
+    </div>
+    <p
+      class="relative flex items-center px-18 group"
+      :class="[!showHeader && 'hover:bg-secondary']"
+    >
+      <span
+        v-if="!showHeader"
+        class="
+          absolute
+          -left-4
+          text-xs
+          translate-x-1/2
+          top-1.5
+          hidden
+          group-hover:block
+          text-muted
+        "
+        >{{ getShortenedTime(message.createdAt) }}</span
+      >
+      <span>{{ message.text }}</span>
     </p>
   </div>
-  <p>{{ message.text }}</p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { getShortenedTime, getTime } from '@/helpers'
 
 export default defineComponent({
   name: 'MessageItem',
@@ -25,6 +54,9 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+  },
+  setup() {
+    return { getShortenedTime, getTime }
   },
 })
 </script>

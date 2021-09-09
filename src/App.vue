@@ -21,7 +21,15 @@ if (userStr) {
 }
 
 // setup vue-query
-useQueryProvider()
+useQueryProvider({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      cacheTime: 0,
+    },
+  },
+})
 </script>
 
 <style></style>

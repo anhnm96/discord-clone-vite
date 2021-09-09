@@ -14,18 +14,20 @@ export default function useMessageSocket(channelId: string, key: string) {
   onMounted(() => {
     channelStore.$reset()
     socket.emit('joinChannel', channelId)
-    console.log('mm')
+    console.log('mm', socket.disconnected)
 
-    socket.on('new_message', (newMessage) => {
-      console.log('new')
+    socket.on('new_message', (newMessage: Message) => {
+      console.log('new', newMessage)
+      cache.invalidateQueries(key)
       cache.setQueryData<Message[]>(key, (d: any) => {
         console.log(d)
         d?.pages[0].unshift(newMessage)
         return d
       })
+      cache.invalidateQueries(key)
     })
 
-    socket.on('edit_message', (editMessage) => {
+    socket.on('edit_message', (editMessage: Message) => {
       cache.setQueryData(key, (d) => {
         let index = -1
         let editId = -1
@@ -41,7 +43,7 @@ export default function useMessageSocket(channelId: string, key: string) {
       })
     })
 
-    socket.on('delete_message', (toBeRemoved) => {
+    socket.on('delete_message', (toBeRemoved: Message) => {
       cache.setQueryData(key, (d: any) => {
         let index = -1
         d?.pages.forEach((p, i) => {
@@ -56,14 +58,14 @@ export default function useMessageSocket(channelId: string, key: string) {
       })
     })
 
-    socket.on('addToTyping', (username) => {
-      console.log('addTyping', username)
+    socket.on('addToTyping', (username: string) => {
+      console.log('addToTyping', username)
       if (username !== userStore.current?.username) {
         channelStore.addTyping(username)
       }
     })
 
-    socket.on('removeFromTyping', (username) => {
+    socket.on('removeFromTyping', (username: string) => {
       if (username !== userStore.current?.username) {
         channelStore.removeTyping(username)
       }

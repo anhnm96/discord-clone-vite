@@ -15,6 +15,7 @@ module.exports = {
       textColor: {
         primary: '#b9bbbe',
         hover: '#dcddde',
+        muted: '#72767b',
       },
       borderColor: {
         primary: 'rgba(255, 255, 255, 0.16)',

@@ -1,5 +1,5 @@
 <template>
-  <p>{{ typingString }}</p>
+  <p v-if="typingString">{{ typingString }}</p>
   <div class="flex rounded-lg bg-textarea">
     <button class="self-start px-4 py-2 text-gray-400 hover:text-gray-300">
       <PlusCircleIcon class="w-6 h-6" />
@@ -52,18 +52,17 @@ export default defineComponent({
     watch(text, () => {
       if (!isTyping.value) {
         isTyping.value = true
-        console.log('startTyping')
         socket.emit('startTyping', channelId, userStore.current?.username)
         timeout = setTimeout(() => {
           isTyping.value = false
           socket.emit('stopTyping', channelId, userStore.current?.username)
-        }, 1000)
+        }, 2000)
       } else {
         clearTimeout(timeout)
         timeout = setTimeout(() => {
           isTyping.value = false
           socket.emit('stopTyping', channelId, userStore.current?.username)
-        }, 1000)
+        }, 2000)
       }
     })
 
@@ -82,8 +81,10 @@ export default defineComponent({
 
     const typingString = computed(() => {
       switch (channelStore.typingUsers.length) {
+        case 0:
+          return ''
         case 1:
-          return channelStore.typingUsers[0] + 'is typing'
+          return channelStore.typingUsers[0] + ' is typing'
         case 2:
           return `${channelStore.typingUsers[0]} and ${channelStore.typingUsers[1]} are typing`
         case 3:
