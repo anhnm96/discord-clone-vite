@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col flex-grow bg-primary">
-    <section class="h-12 shadow-md">
+  <div class="flex flex-col flex-grow h-screen bg-primary">
+    <section class="flex-shrink-0 h-12 shadow-md">
       <div class="flex items-center h-full p-2">
         <div class="flex px-2 space-x-2">
           <UsersIcon class="w-6 h-6" />

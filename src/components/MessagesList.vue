@@ -49,7 +49,6 @@ export default defineComponent({
       console.log(newVal)
     })
     const messages = computed(() => {
-      console.log(data.value)
       return data.value?.pages.flatMap((p: any) => p).reverse()
     })
 

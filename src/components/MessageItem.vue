@@ -6,7 +6,7 @@
       :class="[showHeader && 'mt-4']"
     >
       <img
-        class="absolute top-0 w-10 h-10 rounded-full left-4"
+        class="absolute top-0 w-10 h-10 rounded-full select-none left-4"
         :src="message.user.image"
       />
       <div class="flex items-baseline space-x-2">
@@ -22,16 +22,7 @@
     >
       <span
         v-if="!showHeader"
-        class="
-          absolute
-          -left-4
-          text-xs
-          translate-x-1/2
-          top-1.5
-          hidden
-          group-hover:block
-          text-muted
-        "
+        class="absolute hidden text-xs translate-x-1/2 -translate-y-1/2 select-none  top-1/2 place-items-center -left-2 group-hover:inline-block text-muted"
         >{{ getShortenedTime(message.createdAt) }}</span
       >
       <span>{{ message.text }}</span>

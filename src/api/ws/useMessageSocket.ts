@@ -18,8 +18,8 @@ export default function useMessageSocket(channelId: string, key: string) {
 
     socket.on('new_message', (newMessage: Message) => {
       console.log('new', newMessage)
-      cache.invalidateQueries(key)
-      cache.setQueryData<Message[]>(key, (d: any) => {
+
+      cache.setQueryData(key, (d: any) => {
         console.log(d)
         d?.pages[0].unshift(newMessage)
         return d
