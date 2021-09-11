@@ -16,6 +16,7 @@ module.exports = {
         primary: '#b9bbbe',
         hover: '#dcddde',
         muted: '#72767b',
+        link: 'rgb(0, 175, 244)',
       },
       borderColor: {
         primary: 'rgba(255, 255, 255, 0.16)',
@@ -25,6 +26,7 @@ module.exports = {
         secondary: '#2f3136',
         'secondary-alt': '#292b2f',
         tertiary: '#202225',
+        floating: '#18191c',
         textarea: '#40444b',
         divider: 'hsla(0, 0%, 100%, 0.06)',
         active: 'rgba(79, 84, 92, 0.32)',
@@ -38,6 +40,9 @@ module.exports = {
         13: '3.25rem',
         15: '3.75rem',
         18: '4.5rem',
+      },
+      boxShadow: {
+        msg: '0 0 0 1px rgba(32,34,37,.6),0 2px 10px 0 rgba(0,0,0,.2)',
       },
     },
   },

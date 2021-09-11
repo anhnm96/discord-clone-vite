@@ -17,7 +17,7 @@ export default function useMessageSocket(channelId: string, key: string) {
     console.log('mm', socket.disconnected)
 
     socket.on('new_message', (newMessage: Message) => {
-      console.log('new', newMessage)
+      console.log('new_message', newMessage)
 
       cache.setQueryData(key, (d: any) => {
         console.log(d)
@@ -28,6 +28,7 @@ export default function useMessageSocket(channelId: string, key: string) {
     })
 
     socket.on('edit_message', (editMessage: Message) => {
+      console.log('edit_message', editMessage)
       cache.setQueryData(key, (d) => {
         let index = -1
         let editId = -1
@@ -44,6 +45,7 @@ export default function useMessageSocket(channelId: string, key: string) {
     })
 
     socket.on('delete_message', (toBeRemoved: Message) => {
+      console.log('delete_message', toBeRemoved)
       cache.setQueryData(key, (d: any) => {
         let index = -1
         d?.pages.forEach((p, i) => {

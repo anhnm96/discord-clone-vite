@@ -12,4 +12,5 @@ export const sendMessage = (channelId: string, data: any) =>
 
 export const deleteMessage = (id: string) => api.delete(`/messages/${id}`)
 
-export const editMessage = () => null
+export const editMessage = (id: string, text: string) =>
+  api.put(`/messages/${id}`, { text })

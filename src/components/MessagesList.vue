@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useInfiniteQuery } from 'vue-query'
 import { getMessages } from '@/api/handler/messages'
@@ -45,9 +45,7 @@ export default defineComponent({
             : '',
       }
     )
-    watch(data, (newVal) => {
-      console.log(newVal)
-    })
+
     const messages = computed(() => {
       return data.value?.pages.flatMap((p: any) => p).reverse()
     })
