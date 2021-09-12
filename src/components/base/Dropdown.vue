@@ -34,19 +34,7 @@
         :aria-labelledby="id"
         :aria-multiselectable="multiple"
       >
-        <div
-          class="
-            absolute
-            w-48
-            mt-2
-            origin-top
-            rounded
-            shadow
-            dropdown-content
-            bg-floating
-          "
-          :style="containerStyle"
-        >
+        <div class="dropdown-content" :style="containerStyle">
           <slot name="dropdown" :active="active" :toggle="toggle" />
         </div>
       </div>
@@ -150,9 +138,9 @@ export default defineComponent({
   @apply relative inline-flex;
 }
 .dropdown-menu {
-  top: 100%;
+  @apply absolute top-full left-0 w-full p-2;
 }
 .dropdown-content {
-  @apply py-1.5 px-2;
+  @apply bg-floating text-sm font-semibold p-2 rounded;
 }
 </style>

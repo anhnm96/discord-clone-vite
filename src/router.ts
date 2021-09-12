@@ -32,6 +32,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/channels',
     name: 'Home',
+    redirect: '/channels/me',
     component: () => import('./pages/Home.vue'),
     meta: {
       permission: {
@@ -40,11 +41,22 @@ const routes: RouteRecordRaw[] = [
       },
     },
     children: [
-      { path: 'me', component: () => import('./pages/Channels/Home.vue') },
       {
-        name: 'DM',
-        path: 'me/:id',
-        component: () => import('./pages/Channels/Channel.vue'),
+        path: 'me',
+        component: () => import('./pages/Channels/Home.vue'),
+        children: [
+          { path: '', component: () => import('./pages/Channels/User.vue') },
+          {
+            name: 'DM',
+            path: 'me/:id',
+            component: () => import('./pages/Channels/Channel.vue'),
+          },
+        ],
+      },
+      {
+        name: 'Guild',
+        path: ':guildId/:channelId',
+        component: () => import('./pages/Channels/Guild.vue'),
       },
     ],
   },

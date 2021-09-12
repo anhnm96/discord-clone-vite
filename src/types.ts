@@ -22,6 +22,17 @@ export interface DirectMessage {
   user: User
 }
 
+export interface Guild {
+  id: string
+  name: string
+  ownerId: string
+  icon?: string
+  createdAt: string
+  updatedAt: string
+  hasNotification: boolean
+  default_channel_id: string
+}
+
 export interface Message {
   id: string
   text: string

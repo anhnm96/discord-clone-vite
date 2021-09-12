@@ -8,7 +8,7 @@
       v-model.trim="text"
       :placeholder="placeholder"
       class="flex-auto py-2 pr-2 bg-transparent outline-none resize-none"
-      @keydown.enter="handleSendMessage"
+      @keydown.enter.prevent="handleSendMessage"
     ></textarea>
   </div>
 </template>

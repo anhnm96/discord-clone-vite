@@ -1,12 +1,12 @@
 <template>
   <Modal
-    v-slot="{close}"
+    v-slot="{ close }"
     :model-value="modelValue"
     :persistent="false"
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <div
-      class="max-w-md px-6 py-4 mx-auto space-y-4 rounded-md bg-primary text-hover"
+      class="max-w-md px-6 py-4 mx-auto space-y-4 rounded-md  bg-primary text-hover"
       style="width: 70vw"
     >
       <header class="flex items-center justify-between">
@@ -20,14 +20,16 @@
         </button>
       </header>
       <Form
-        v-slot="{isSubmitting}"
-        class="space-y-4 "
+        v-slot="{ isSubmitting }"
+        class="space-y-4"
         @submit="handleAddFriend"
       >
         <main class="space-y-4">
           <p>You can add a friend with their UID</p>
           <!-- uid -->
-          <div class="flex items-stretch overflow-hidden border border-black rounded">
+          <div
+            class="flex items-stretch overflow-hidden border border-black rounded "
+          >
             <p class="flex items-center px-4 bg-black select-none">UID</p>
             <div class="relative flex-auto">
               <input
@@ -35,45 +37,47 @@
                 type="text"
                 :value="userStore.current?.id"
                 disabled
-              >
+              />
               <button
                 type="button"
-                class="absolute px-2 py-1 text-white transition -translate-y-1/2 rounded right-1 top-1/2"
-                :class="[hasCopied ? 'bg-green-500' : 'bg-purple hover:bg-purple-dark']"
+                class="absolute px-2 py-1 text-white transition -translate-y-1/2 rounded  right-1 top-1/2"
+                :class="[
+                  hasCopied ? 'bg-green-500' : 'bg-purple hover:bg-purple-dark',
+                ]"
                 @click="copyToClipboard"
-              >{{ hasCopied ? 'Copied' : 'Copy'}}</button>
+              >
+                {{ hasCopied ? 'Copied' : 'Copy' }}
+              </button>
             </div>
           </div>
           <!-- user id -->
           <div class="space-y-2">
-            <label
-              for="id"
-              class="text-xs uppercase"
-            >Enter a user id</label>
+            <label for="id" class="text-xs uppercase">Enter a user id</label>
             <Field
               id="id"
               name="id"
-              class="w-full py-2 pl-4 border border-black rounded outline-none bg-secondary-alt"
+              class="w-full py-2 pl-4 border border-black rounded outline-none  bg-secondary-alt"
               type="text"
             />
-            <ErrorMessage
-              class="text-red-400"
-              name="id"
-            />
+            <ErrorMessage class="text-red-400" name="id" />
           </div>
         </main>
         <footer>
           <div class="flex justify-end space-x-2">
             <button
               type="button"
-              class="px-4 py-2 text-white bg-transparent rounded hover:underline"
+              class="px-4 py-2 text-white bg-transparent rounded  hover:underline"
               @click="close"
-            >Cancel</button>
+            >
+              Cancel
+            </button>
             <button
               :disabled="isSubmitting"
               type="submit"
-              class="px-4 py-2 text-white transition rounded bg-purple hover:bg-purple-dark"
-            >Send Friend Request</button>
+              class="px-4 py-2 text-white transition rounded  bg-purple hover:bg-purple-dark"
+            >
+              Send Friend Request
+            </button>
           </div>
         </footer>
       </Form>
@@ -134,7 +138,7 @@ export default defineComponent({
           emit('update:modelValue', false)
           cache.invalidateQueries('requests')
         }
-      } catch (err) {
+      } catch (err: any) {
         setErrors(toErrorMap(err))
       }
     }
@@ -144,5 +148,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
+<style></style>

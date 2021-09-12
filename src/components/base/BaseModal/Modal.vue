@@ -36,7 +36,7 @@
       <div
         v-if="showContent"
         v-trap-focus
-        class="relative w-full"
+        class="relative"
         role="dialog"
         aria-modal="true"
         v-bind="$attrs"
