@@ -7,10 +7,9 @@
       >
         <template #trigger>
           <p class="font-semibold truncate">{{ guild?.name }}</p>
-          <p>{{ test?.name }} asd</p>
           <ChevronDownIcon class="flex-shrink-0 w-5 h-5" />
         </template>
-        <template #dropdown>
+        <template #dropdown="{ close }">
           <button
             class="
               w-full
@@ -22,7 +21,12 @@
               items-center
               justify-between
             "
-            @click="showInviteModal = true"
+            @click="
+              () => {
+                showInviteModal = true
+                close()
+              }
+            "
           >
             <span>Invite people</span>
             <UserAddIcon class="w-4 h-4" />
@@ -79,10 +83,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery } from 'vue-query'
-import { gKey } from '@/helpers'
 import {
   ChevronDownIcon,
   HashtagIcon,
@@ -114,12 +116,8 @@ export default defineComponent({
     const guild = useGetCurrentGuild(guildId)
     const channel = useGetCurrentChannel(channelId, cKey(guildId))
     const showInviteModal = ref(false)
-    const test = ref()
-    onMounted(() => {
-      const { data } = useQuery(gKey)
-      test.value = data.value
-    })
-    return { guild, channel, showInviteModal, test }
+
+    return { guild, channel, showInviteModal }
   },
 })
 </script>

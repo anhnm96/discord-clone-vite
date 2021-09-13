@@ -138,7 +138,7 @@
             </div>
           </section>
         </Form>
-        <div v-else class="pt-4">
+        <Form v-else class="pt-4" @submit="joinServer">
           <button
             class="absolute grid w-8 h-8 transition-colors  right-3 top-3 place-items-center hover:text-hover"
             aria-label="close"
@@ -157,13 +157,14 @@
               <label for="link" class="text-xs font-bold uppercase"
                 >Invite link</label
               >
-              <input
+              <Field
                 id="link"
-                v-model="inviteLink"
                 v-focus
+                name="link"
                 type="text"
                 class="p-2 border rounded  bg-input hover:border-input-hover border-input"
               />
+              <ErrorMessage class="text-red-400" name="link" />
             </div>
             <div>
               <h5 class="text-xs font-bold uppercase">
@@ -177,6 +178,7 @@
           <section class="px-6 py-4 mt-4 bg-secondary">
             <div class="flex items-center justify-between">
               <button
+                type="button"
                 class="px-4 py-2 text-sm font-semibold text-white bg-transparent rounded  hover:underline"
                 @click="
                   () => {
@@ -188,13 +190,14 @@
                 Back
               </button>
               <button
+                type="submit"
                 class="px-4 py-2 text-sm font-semibold text-white transition rounded  bg-purple hover:bg-purple-dark"
               >
                 Join server
               </button>
             </div>
           </section>
-        </div>
+        </Form>
       </transition-group>
     </div>
   </Modal>
@@ -205,7 +208,7 @@ import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQueryClient } from 'vue-query'
 import { XIcon, ChevronRightIcon } from '@heroicons/vue/solid'
-import { createGuild } from '@/api/handler/guilds'
+import { createGuild, joinGuild } from '@/api/handler/guilds'
 import { Modal, ModalTitle } from '@/components/base/BaseModal'
 import { useUser } from '@/stores/user'
 import focus from '@/directives/focus'
@@ -228,7 +231,6 @@ export default defineComponent({
     const userStore = useUser()
     const showModal = ref('select')
     const guildName = ref(`${userStore.current?.username}'s server`)
-    const inviteLink = ref('')
     const transition = ref('slide-left')
 
     async function createServer(values: any, { setErrors }: any) {
@@ -246,7 +248,29 @@ export default defineComponent({
       }
     }
 
-    return { showModal, guildName, inviteLink, createServer, transition }
+    async function joinServer(values: any, { setErrors }: any) {
+      if (values.link === '') {
+        setErrors({ link: 'Enter a valid link' })
+        return
+      }
+      try {
+        const { data } = await joinGuild(values)
+        if (data) {
+          cache.invalidateQueries(gKey)
+          emit('update:modelValue', false)
+          router.push(`/channels/${data.id}/${data.default_channel_id}`)
+        }
+      } catch (err: any) {
+        const status = err?.response?.status
+        if (status === 400 || status === 404) {
+          setErrors({ link: err?.response?.data?.message })
+        } else {
+          setErrors(toErrorMap(err))
+        }
+      }
+    }
+
+    return { showModal, guildName, createServer, joinServer, transition }
   },
 })
 </script>

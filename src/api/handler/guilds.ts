@@ -4,7 +4,7 @@ export const getUserGuilds = () => api.get('/guilds')
 
 export const createGuild = (name: string) => api.post(`/guilds/create`, name)
 
-export const joinGuild = (link: string) => api.post('/guilds/join', link)
+export const joinGuild = (body: any) => api.post('/guilds/join', body)
 
 export const getInviteLink = (id: string, isPermanent = false) =>
   api.get(`/guilds/${id}/invite${isPermanent ? '?isPermanent=true' : ''}`)

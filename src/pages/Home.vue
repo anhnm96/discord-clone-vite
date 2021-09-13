@@ -44,13 +44,11 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { useQuery } from 'vue-query'
 import { PlusIcon } from '@heroicons/vue/outline'
-import { gKey } from '@/helpers'
-import { getUserGuilds } from '@/api/handler/guilds'
 import GuildItem from '@/components/GuildItem.vue'
 import Dialog from '@/components/base/Dialog/Dialog.vue'
 import AddGuildModal from '@/components/modals/AddGuildModal.vue'
+import { useGetGuildList } from '@/hooks/useGetCurrentGuild'
 
 export default defineComponent({
   name: 'PageHome',
@@ -62,9 +60,7 @@ export default defineComponent({
   },
   setup() {
     const showAddGuildModal = ref(false)
-    const { data: guilds } = useQuery(gKey, () =>
-      getUserGuilds().then((res) => res.data)
-    )
+    const guilds = useGetGuildList()
 
     return { showAddGuildModal, guilds }
   },

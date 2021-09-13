@@ -1,25 +1,17 @@
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useQuery } from 'vue-query'
 import { gKey } from '@/helpers/querykeys'
+import { getUserGuilds } from '@/api/handler/guilds'
+import { Guild } from '@/types'
 
-// export function useGetCurrentGuild(guildId: string) {
-//   const result = ref()
-//   useQuery(gKey, {
-//     onSuccess: (d) => {
-//       result.value = d?.find((g) => g.id === guildId)
-//       console.log(result.value)
-//     },
-//     onError: (e) => {
-//       console.log(e)
-//     },
-//   })
-//   console.log('useGetCurrentGuild')
-//   return result
-// }
+export function useGetGuildList() {
+  const { data: guilds } = useQuery<Guild[]>(gKey, () =>
+    getUserGuilds().then((res) => res.data)
+  )
+  return guilds
+}
 
 export function useGetCurrentGuild(guildId: string) {
-  const { data } = useQuery(gKey)
-
-  console.log('data', data.value)
-  return data.value?.find((g) => g.id === guildId)
+  const guilds = useGetGuildList()
+  return computed(() => guilds.value?.find((g: Guild) => g.id === guildId))
 }

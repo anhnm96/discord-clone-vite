@@ -71,7 +71,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup() {
     const route = useRoute()
-    const guildId = route.params.id as string
+    const guildId = route.params.guildId as string
     const hasCopied = ref(false)
     const inviteLink = ref('')
     const guild = useGetCurrentGuild(guildId)
