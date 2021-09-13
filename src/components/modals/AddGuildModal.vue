@@ -129,12 +129,13 @@
               >
                 Back
               </button>
-              <button
+              <b-button
+                :loading="loading"
                 type="submit"
                 class="px-4 py-2 text-sm font-semibold text-white transition rounded  bg-purple hover:bg-purple-dark"
               >
                 Create
-              </button>
+              </b-button>
             </div>
           </section>
         </Form>
@@ -189,12 +190,13 @@
               >
                 Back
               </button>
-              <button
+              <b-button
+                :loading="loading"
                 type="submit"
                 class="px-4 py-2 text-sm font-semibold text-white transition rounded  bg-purple hover:bg-purple-dark"
               >
                 Join server
-              </button>
+              </b-button>
             </div>
           </section>
         </Form>
@@ -232,9 +234,11 @@ export default defineComponent({
     const showModal = ref('select')
     const guildName = ref(`${userStore.current?.username}'s server`)
     const transition = ref('slide-left')
+    const loading = ref(false)
 
     async function createServer(values: any, { setErrors }: any) {
       try {
+        loading.value = true
         const { data } = await createGuild(values)
         if (data) {
           cache.setQueryData(gKey, (guilds: any) => {
@@ -245,15 +249,18 @@ export default defineComponent({
         }
       } catch (err: any) {
         setErrors(toErrorMap(err))
+      } finally {
+        loading.value = false
       }
     }
 
     async function joinServer(values: any, { setErrors }: any) {
-      if (values.link === '') {
+      if (!values.link) {
         setErrors({ link: 'Enter a valid link' })
         return
       }
       try {
+        loading.value = true
         const { data } = await joinGuild(values)
         if (data) {
           cache.invalidateQueries(gKey)
@@ -267,10 +274,19 @@ export default defineComponent({
         } else {
           setErrors(toErrorMap(err))
         }
+      } finally {
+        loading.value = false
       }
     }
 
-    return { showModal, guildName, createServer, joinServer, transition }
+    return {
+      showModal,
+      guildName,
+      createServer,
+      joinServer,
+      transition,
+      loading,
+    }
   },
 })
 </script>

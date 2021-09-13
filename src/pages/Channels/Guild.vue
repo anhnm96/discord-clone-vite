@@ -9,7 +9,7 @@
           <p class="font-semibold truncate">{{ guild?.name }}</p>
           <ChevronDownIcon class="flex-shrink-0 w-5 h-5" />
         </template>
-        <template #dropdown="{ close }">
+        <template #dropdown="{ toggle }">
           <button
             class="
               w-full
@@ -24,7 +24,7 @@
             @click="
               () => {
                 showInviteModal = true
-                close()
+                toggle(false)
               }
             "
           >

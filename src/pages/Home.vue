@@ -15,8 +15,8 @@
       <div class="bg-divider h-0.5 w-8 mx-auto my-3" />
       <div>
         <ul class="space-y-2">
-          <li>
-            <GuildItem v-for="guild in guilds" :key="guild.id" :guild="guild" />
+          <li v-for="guild in guilds" :key="guild.id">
+            <GuildItem :guild="guild" />
           </li>
           <li>
             <div class="relative flex justify-center">

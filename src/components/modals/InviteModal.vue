@@ -32,16 +32,19 @@
             :value="inviteLink"
             disabled
           />
-          <button
-            type="button"
-            class="absolute px-2 py-1 text-white transition -translate-y-1/2 rounded  right-1 top-1/2"
-            :class="[
-              hasCopied ? 'bg-green-500' : 'bg-purple hover:bg-purple-dark',
-            ]"
-            @click="copyToClipboard"
-          >
-            {{ hasCopied ? 'Copied' : 'Copy' }}
-          </button>
+          <div class="absolute right-1 top-1/2">
+            <b-button
+              :loading="loading"
+              type="button"
+              class="px-2 py-1 text-white transition -translate-y-1/2 rounded"
+              :class="[
+                hasCopied ? 'bg-green-500' : 'bg-purple hover:bg-purple-dark',
+              ]"
+              @click="copyToClipboard"
+            >
+              {{ hasCopied ? 'Copied' : 'Copy' }}
+            </b-button>
+          </div>
         </div>
         <p class="text-xs">
           Your invite link expires in 1 day and can only be used once
@@ -75,12 +78,15 @@ export default defineComponent({
     const hasCopied = ref(false)
     const inviteLink = ref('')
     const guild = useGetCurrentGuild(guildId)
+    const loading = ref(false)
 
     async function fetchLink() {
+      loading.value = true
       const { data } = await getInviteLink(guildId)
       if (data) {
         inviteLink.value = data
       }
+      loading.value = false
     }
     fetchLink()
 
@@ -95,7 +101,7 @@ export default defineComponent({
       })
     }
 
-    return { hasCopied, guild, copyToClipboard, inviteLink }
+    return { hasCopied, guild, copyToClipboard, inviteLink, loading }
   },
 })
 </script>
