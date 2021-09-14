@@ -49,6 +49,7 @@ import GuildItem from '@/components/GuildItem.vue'
 import Dialog from '@/components/base/Dialog/Dialog.vue'
 import AddGuildModal from '@/components/modals/AddGuildModal.vue'
 import { useGetGuildList } from '@/hooks/useGetCurrentGuild'
+import useGuildSocket from '@/api/ws/useGuildSocket'
 
 export default defineComponent({
   name: 'PageHome',
@@ -59,6 +60,7 @@ export default defineComponent({
     PlusIcon,
   },
   setup() {
+    useGuildSocket()
     const showAddGuildModal = ref(false)
     const guilds = useGetGuildList()
 

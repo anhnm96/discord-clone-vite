@@ -32,6 +32,7 @@
             <UserAddIcon class="w-4 h-4" />
           </button>
           <button
+            v-if="isOwner"
             class="
               w-full
               py-1.5
@@ -41,6 +42,12 @@
               flex
               items-center
               justify-between
+            "
+            @click="
+              () => {
+                showGuildSettingModal = true
+                toggle(false)
+              }
             "
           >
             <span>Server settings</span>
@@ -77,13 +84,18 @@
       </router-link>
     </nav>
     <InviteModal v-if="showInviteModal" v-model="showInviteModal" />
+    <GuildSettingsModal
+      v-if="showGuildSettingModal && guild"
+      v-model="showGuildSettingModal"
+      :guild="guild"
+    />
     <UserPanel />
   </div>
   <div class="flex flex-col flex-grow h-screen bg-primary">asd</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   ChevronDownIcon,
@@ -95,8 +107,10 @@ import {
 import { useGetCurrentChannel } from '@/hooks/useGetCurrentChannel'
 import { useGetCurrentGuild } from '@/hooks/useGetCurrentGuild'
 import { cKey } from '@/helpers'
+import { useUser } from '@/stores/user'
 import UserPanel from '@/components/UserPanel.vue'
 import InviteModal from '@/components/modals/InviteModal.vue'
+import GuildSettingsModal from '@/components/modals/GuildSettingsModal.vue'
 
 export default defineComponent({
   name: 'Guild',
@@ -108,16 +122,23 @@ export default defineComponent({
     PlusCircleIcon,
     UserPanel,
     InviteModal,
+    GuildSettingsModal,
   },
   setup() {
     const route = useRoute()
+    const userStore = useUser()
     const channelId = route.params.channelId as string
     const guildId = route.params.guildId as string
     const guild = useGetCurrentGuild(guildId)
     const channel = useGetCurrentChannel(channelId, cKey(guildId))
     const showInviteModal = ref(false)
+    const showGuildSettingModal = ref(false)
 
-    return { guild, channel, showInviteModal }
+    const isOwner = computed(() => {
+      return guild.value?.ownerId === userStore.current?.id
+    })
+
+    return { guild, channel, showInviteModal, showGuildSettingModal, isOwner }
   },
 })
 </script>
