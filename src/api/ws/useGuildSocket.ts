@@ -4,6 +4,7 @@ import { useQueryClient } from 'vue-query'
 import { useUser } from '@/stores/user'
 import getSocket from '@/api/getSocket'
 import { gKey } from '@/helpers'
+import { Guild } from '@/types'
 
 export default function useGuildSocket() {
   const userStore = useUser()
@@ -15,24 +16,27 @@ export default function useGuildSocket() {
   onMounted(() => {
     socket.emit('joinUser', current?.id)
 
-    socket.on('edit_guild', (editedGuild: any) => {
+    socket.on('edit_guild', (editedGuild: Guild) => {
       console.log('edit_guild', editedGuild)
-      cache.setQueryData(gKey, (d) => {
-        const index = d?.findIndex((c) => c.id === editedGuild.id)
+      cache.setQueryData(gKey, (d: Guild[] | undefined): any => {
+        if (!d) return
+        const copy = [...d]
+
+        const index = d.findIndex((c) => c.id === editedGuild.id)
         if (index !== -1) {
-          d[index] = {
-            ...d[index],
+          copy[index] = {
+            ...copy[index],
             name: editedGuild.name,
             icon: editedGuild.icon,
           }
         }
-        return d
+        return copy
       })
     })
 
     socket.on('delete_guild', (deleteId: string) => {
       console.log('delete_guild', deleteId)
-      cache.setQueryData(gKey, (d) => {
+      cache.setQueryData(gKey, (d: Guild[] | undefined): any => {
         const isActive = location.pathname.includes(deleteId)
         if (isActive) {
           router.replace('/channels/me')
@@ -43,24 +47,26 @@ export default function useGuildSocket() {
 
     socket.on('remove_from_guild', (guildId: string) => {
       console.log('remove_from_guild', guildId)
-      cache.setQueryData(gKey, (d) => {
+      cache.setQueryData(gKey, (d: Guild[] | undefined): any => {
         const isActive = location.pathname.includes(guildId)
         if (isActive) {
           router.replace('/channels/me')
         }
-        return d.filter((g) => g.id !== guildId)
+        return d?.filter((g) => g.id !== guildId)
       })
     })
 
     socket.on('new_notification', (id: string) => {
       console.log('new_notification', id)
       if (!location.pathname.includes(id)) {
-        cache.setQueryData(gKey, (d) => {
-          const index = d?.findIndex((c) => c.id === id)
+        cache.setQueryData(gKey, (d: Guild[] | undefined): any => {
+          if (!d) return
+          const copy = [...d]
+          const index = d.findIndex((c) => c.id === id)
           if (index !== -1) {
-            d[index] = { ...d[index], hasNotification: true }
+            copy[index] = { ...copy[index], hasNotification: true }
           }
-          return d
+          return copy
         })
       }
     })

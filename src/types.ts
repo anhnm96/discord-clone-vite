@@ -29,8 +29,9 @@ export interface Guild {
   icon?: string
   createdAt: string
   updatedAt: string
-  hasNotification: boolean
-  default_channel_id: string
+  hasNotification?: boolean
+  default_channel_id?: string
+  inviteLinks?: any
 }
 
 export interface Message {
