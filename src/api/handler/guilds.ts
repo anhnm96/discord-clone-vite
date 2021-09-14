@@ -15,3 +15,8 @@ export const editGuild = (id: string, body: any) =>
       'Content-Type': 'multipart/form-data',
     },
   })
+
+export const invalidateInviteLinks = (id: string) =>
+  api.delete(`/guilds/${id}/invite`)
+
+export const deleteGuild = (id: string) => api.delete(`/guilds/${id}/delete`)

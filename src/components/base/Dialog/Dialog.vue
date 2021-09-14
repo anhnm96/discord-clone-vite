@@ -18,13 +18,13 @@
             class="px-4 py-2 text-white bg-transparent hover:underline"
             @click="cancel"
           >
-            Cancel
+            {{ state.cancelText }}
           </button>
           <button
             class="px-4 py-2 text-white transition bg-red-500 rounded-md  hover:bg-red-600"
             @click="confirm"
           >
-            Confirm
+            {{ state.okText }}
           </button>
         </footer>
       </div>

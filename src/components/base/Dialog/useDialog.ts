@@ -4,11 +4,13 @@ const state = reactive({
   show: false,
   title: '',
   content: '',
+  okText: 'Confirm',
+  cancelText: 'Cancel',
 })
 
 let close: (msg: string) => void
 
-function open(opts: any): Promise<string> {
+function open(opts?: any): Promise<string> {
   state.show = true
   Object.assign(state, opts)
   return new Promise((resolve) => (close = resolve))

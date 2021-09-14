@@ -51,18 +51,28 @@
           <div class="space-y-2">
             <h5 class="font-semibold text-white">Additional Configuration</h5>
             <div class="flex justify-between">
-              <button
-                class="px-4 py-2 transition bg-gray-600 rounded  hover:bg-gray-500"
+              <b-button
+                :loading="invalidatingInvites"
+                class="px-4 py-2 transition rounded"
+                :class="[
+                  invalidateSuccess
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-600 hover:bg-gray-500',
+                ]"
+                @click="handleInvalidateInvites"
               >
                 Invalidate Links
-              </button>
+              </b-button>
               <button
                 class="px-4 py-2 transition bg-gray-600 rounded  hover:bg-gray-500"
               >
                 Bans
               </button>
             </div>
-            <button class="px-4 py-2 text-red-400 hover:underline">
+            <button
+              class="px-4 py-2 text-red-400 hover:underline"
+              @click="handleDeleteServer"
+            >
               Delete Server
             </button>
           </div>
@@ -91,13 +101,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
 import { Modal, ModalTitle } from '@/components/base/BaseModal'
 import { XIcon } from '@heroicons/vue/outline'
 import { GuildSchema } from '@/validation/guild'
-import { editGuild } from '@/api/handler/guilds'
+import {
+  editGuild,
+  invalidateInviteLinks,
+  deleteGuild,
+} from '@/api/handler/guilds'
 import { toErrorMap } from '@/helpers'
 import { Guild } from '@/types'
+import { useDialog } from '@/components/base/Dialog/useDialog'
 
 export default defineComponent({
   name: 'GuildSettingsModal',
@@ -118,6 +133,19 @@ export default defineComponent({
       name: props.guild.name,
     }
 
+    const { open } = useDialog()
+    async function handleDeleteServer() {
+      emit('update:modelValue', false)
+      const answer = await open({
+        title: `Delete server "${props.guild.name}"`,
+        content: `Are you sure you want to delete "${props.guild.name}"? This cannot be undone.`,
+        okText: 'Delete Server',
+      })
+      if (answer === 'confirm') {
+        deleteGuild(props.guild.id)
+      }
+    }
+
     async function handleEditGuild(values: any, { setErrors }: any) {
       try {
         const formData = new FormData()
@@ -131,7 +159,30 @@ export default defineComponent({
       }
     }
 
-    return { handleEditGuild, GuildSchema, formValues }
+    const invalidatingInvites = ref(false)
+    const invalidateSuccess = ref(false)
+    async function handleInvalidateInvites() {
+      invalidatingInvites.value = true
+      const { data } = await invalidateInviteLinks(props.guild.id)
+      invalidatingInvites.value = false
+      if (data) {
+        console.log(data)
+        invalidateSuccess.value = true
+        setTimeout(() => {
+          invalidateSuccess.value = false
+        }, 2000)
+      }
+    }
+
+    return {
+      handleEditGuild,
+      GuildSchema,
+      formValues,
+      handleInvalidateInvites,
+      invalidatingInvites,
+      invalidateSuccess,
+      handleDeleteServer,
+    }
   },
 })
 </script>
