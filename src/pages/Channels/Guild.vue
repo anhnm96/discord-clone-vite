@@ -73,14 +73,23 @@
     </section>
     <nav class="flex-grow p-2 bg-secondary">
       <router-link
-        to="/channels/me"
-        class="flex items-center px-2 py-2 rounded  bg-active hover:bg-modifier-hover"
+        v-for="channel in channels"
+        :key="channel.id"
+        :to="`/channels/${guildId}/${channel.id}`"
+        class="flex items-center px-2 py-2 rounded  bg-modifier-selected hover:bg-modifier-hover"
       >
-        <HashtagIcon class="w-6 h-6 text-muted" />
-        <p class="ml-2 font-semibold text-white truncate">Friends</p>
-        <button class="ml-auto" aria-label="create invite">
-          <UserAddIcon class="w-4 h-4" />
-        </button>
+        <HashtagIcon v-if="channel.isPublic" class="w-5 h-5 text-muted" />
+        <LockClosedIcon v-else class="w-5 h-5 text-muted" />
+
+        <p class="ml-2 font-semibold text-white truncate">{{ channel.name }}</p>
+        <div class="flex items-center ml-auto space-x-1">
+          <button class="" aria-label="Create invite">
+            <UserAddIcon class="w-4 h-4" />
+          </button>
+          <button class="" aria-label="Edit channel">
+            <CogIcon class="w-4 h-4" />
+          </button>
+        </div>
       </router-link>
     </nav>
     <InviteModal v-if="showInviteModal" v-model="showInviteModal" />
@@ -97,26 +106,31 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useQuery } from 'vue-query'
 import {
   ChevronDownIcon,
   HashtagIcon,
+  LockClosedIcon,
   UserAddIcon,
   CogIcon,
   PlusCircleIcon,
 } from '@heroicons/vue/solid'
-import { useGetCurrentChannel } from '@/hooks/useGetCurrentChannel'
 import { useGetCurrentGuild } from '@/hooks/useGetCurrentGuild'
 import { cKey } from '@/helpers'
 import { useUser } from '@/stores/user'
 import UserPanel from '@/components/UserPanel.vue'
 import InviteModal from '@/components/modals/InviteModal.vue'
 import GuildSettingsModal from '@/components/modals/GuildSettingsModal.vue'
+import { getChannels } from '@/api/handler/channel'
+import useChannelSocket from '@/api/ws/useChannelSocket'
+import { Channel } from '@/types'
 
 export default defineComponent({
   name: 'Guild',
   components: {
     ChevronDownIcon,
     HashtagIcon,
+    LockClosedIcon,
     UserAddIcon,
     CogIcon,
     PlusCircleIcon,
@@ -127,18 +141,30 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const userStore = useUser()
-    const channelId = route.params.channelId as string
     const guildId = route.params.guildId as string
+    const key = cKey(guildId)
     const guild = useGetCurrentGuild(guildId)
-    const channel = useGetCurrentChannel(channelId, cKey(guildId))
     const showInviteModal = ref(false)
     const showGuildSettingModal = ref(false)
+
+    const { data: channels } = useQuery<Channel[]>(key, () =>
+      getChannels(guildId).then((res) => res.data)
+    )
+
+    useChannelSocket(guildId, key)
 
     const isOwner = computed(() => {
       return guild.value?.ownerId === userStore.current?.id
     })
 
-    return { guild, channel, showInviteModal, showGuildSettingModal, isOwner }
+    return {
+      guild,
+      guildId,
+      channels,
+      showInviteModal,
+      showGuildSettingModal,
+      isOwner,
+    }
   },
 })
 </script>

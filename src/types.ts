@@ -34,6 +34,15 @@ export interface Guild {
   inviteLinks?: any
 }
 
+export interface Channel {
+  id: string
+  name: string
+  isPublic: boolean
+  createdAt: string
+  updatedAt: string
+  hasNotification: boolean
+}
+
 export interface Message {
   id: string
   text: string

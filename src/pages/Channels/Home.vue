@@ -3,7 +3,7 @@
     <nav class="flex-grow p-2 bg-secondary">
       <router-link
         to="/channels/me"
-        class="flex items-center px-3 py-3 space-x-3 rounded bg-active"
+        class="flex items-center px-3 py-3 space-x-3 rounded  bg-modifier-selected"
       >
         <UsersIcon class="w-6 h-6" />
         <p class="font-semibold">Friends</p>

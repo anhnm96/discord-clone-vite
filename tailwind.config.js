@@ -31,7 +31,6 @@ module.exports = {
         tertiary: '#202225',
         floating: '#18191c',
         textarea: '#40444b',
-        active: 'rgba(79, 84, 92, 0.32)',
         'blue-light': 'rgb(144, 205, 244)',
         'blue-dark': 'rgb(99, 179, 237)',
         'modifier-hover': 'rgba(79, 84, 92, 0.16)',

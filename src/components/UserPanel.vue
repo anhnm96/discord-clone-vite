@@ -9,17 +9,17 @@
       </div>
       <div class="flex flex-shrink-0">
         <button
-          class="grid w-8 h-8 text-gray-400 rounded  place-items-center hover:bg-active hover:text-gray-300"
+          class="grid w-8 h-8 text-gray-400 rounded  place-items-center hover:bg-modifier-selected hover:text-gray-300"
         >
           <MicrophoneIcon class="w-5 h-5" />
         </button>
         <button
-          class="grid w-8 h-8 text-gray-400 rounded  place-items-center hover:bg-active hover:text-gray-300"
+          class="grid w-8 h-8 text-gray-400 rounded  place-items-center hover:bg-modifier-selected hover:text-gray-300"
         >
           <VolumeUpIcon class="w-5 h-5" />
         </button>
         <button
-          class="grid w-8 h-8 text-gray-400 rounded  place-items-center hover:bg-active hover:text-gray-300"
+          class="grid w-8 h-8 text-gray-400 rounded  place-items-center hover:bg-modifier-selected hover:text-gray-300"
           aria-label="settings"
           @click="showSettings = true"
         >
