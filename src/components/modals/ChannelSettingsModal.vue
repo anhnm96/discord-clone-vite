@@ -76,7 +76,7 @@ import { defineComponent, PropType } from 'vue'
 import { Modal, ModalTitle } from '@/components/base/BaseModal'
 import { XIcon } from '@heroicons/vue/outline'
 import { Channel } from '@/types'
-import { editChannel } from '@/api/handler/channel'
+import { editChannel, deleteChannel } from '@/api/handler/channel'
 import { toErrorMap } from '@/helpers'
 
 export default defineComponent({
@@ -99,7 +99,10 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const initialValues = { name: props.channel.name }
-    function handleDeleteChannel() {}
+    async function handleDeleteChannel() {
+      emit('update:modelValue', false)
+      await deleteChannel(props.guildId, props.channel.id)
+    }
 
     async function handleEditChannel(values: any, { setErrors }: any) {
       try {
