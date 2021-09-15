@@ -9,3 +9,6 @@ interface ChannelPayload {
 }
 export const createChannel = (id: string, body: ChannelPayload) =>
   api.post(`/channels/${id}`, body)
+
+export const editChannel = (guildId: string, channelId: string, body: any) =>
+  api.put(`/channels/${guildId}/${channelId}`, body)

@@ -40,7 +40,7 @@ export interface Channel {
   isPublic: boolean
   createdAt: string
   updatedAt: string
-  hasNotification: boolean
+  hasNotification?: boolean
 }
 
 export interface Message {

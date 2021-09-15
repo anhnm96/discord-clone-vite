@@ -54,6 +54,7 @@
             <CogIcon class="w-4 h-4" />
           </button>
           <button
+            v-if="isOwner"
             class="
               w-full
               py-1.5
@@ -64,6 +65,12 @@
               items-center
               justify-between
             "
+            @click="
+              () => {
+                showAddChannelModal = true
+                toggle(false)
+              }
+            "
           >
             <span>Create channel</span>
             <PlusCircleIcon class="w-4 h-4" />
@@ -72,25 +79,12 @@
       </dropdown>
     </section>
     <nav class="flex-grow p-2 bg-secondary">
-      <router-link
+      <ChannelItem
         v-for="channel in channels"
         :key="channel.id"
-        :to="`/channels/${guildId}/${channel.id}`"
-        class="flex items-center px-2 py-2 rounded  bg-modifier-selected hover:bg-modifier-hover"
-      >
-        <HashtagIcon v-if="channel.isPublic" class="w-5 h-5 text-muted" />
-        <LockClosedIcon v-else class="w-5 h-5 text-muted" />
-
-        <p class="ml-2 font-semibold text-white truncate">{{ channel.name }}</p>
-        <div class="flex items-center ml-auto space-x-1">
-          <button class="" aria-label="Create invite">
-            <UserAddIcon class="w-4 h-4" />
-          </button>
-          <button class="" aria-label="Edit channel">
-            <CogIcon class="w-4 h-4" />
-          </button>
-        </div>
-      </router-link>
+        :channel="channel"
+        :guild-id="guildId"
+      />
     </nav>
     <InviteModal v-if="showInviteModal" v-model="showInviteModal" />
     <GuildSettingsModal
@@ -98,6 +92,7 @@
       v-model="showGuildSettingModal"
       :guild="guild"
     />
+    <AddChannelModal v-model="showAddChannelModal" :guild-id="guildId" />
     <UserPanel />
   </div>
   <div class="flex flex-col flex-grow h-screen bg-primary">asd</div>
@@ -109,8 +104,6 @@ import { useRoute } from 'vue-router'
 import { useQuery } from 'vue-query'
 import {
   ChevronDownIcon,
-  HashtagIcon,
-  LockClosedIcon,
   UserAddIcon,
   CogIcon,
   PlusCircleIcon,
@@ -121,22 +114,24 @@ import { useUser } from '@/stores/user'
 import UserPanel from '@/components/UserPanel.vue'
 import InviteModal from '@/components/modals/InviteModal.vue'
 import GuildSettingsModal from '@/components/modals/GuildSettingsModal.vue'
+import ChannelItem from '@/components/ChannelItem.vue'
 import { getChannels } from '@/api/handler/channel'
 import useChannelSocket from '@/api/ws/useChannelSocket'
 import { Channel } from '@/types'
+import AddChannelModal from '@/components/modals/AddChannelModal.vue'
 
 export default defineComponent({
   name: 'Guild',
   components: {
     ChevronDownIcon,
-    HashtagIcon,
-    LockClosedIcon,
     UserAddIcon,
     CogIcon,
     PlusCircleIcon,
     UserPanel,
     InviteModal,
     GuildSettingsModal,
+    AddChannelModal,
+    ChannelItem,
   },
   setup() {
     const route = useRoute()
@@ -146,6 +141,7 @@ export default defineComponent({
     const guild = useGetCurrentGuild(guildId)
     const showInviteModal = ref(false)
     const showGuildSettingModal = ref(false)
+    const showAddChannelModal = ref(false)
 
     const { data: channels } = useQuery<Channel[]>(key, () =>
       getChannels(guildId).then((res) => res.data)
@@ -163,6 +159,7 @@ export default defineComponent({
       channels,
       showInviteModal,
       showGuildSettingModal,
+      showAddChannelModal,
       isOwner,
     }
   },

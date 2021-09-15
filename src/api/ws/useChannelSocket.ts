@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useQueryClient } from 'vue-query'
 import getSocket from '@/api/getSocket'
 import { useGetCurrentGuild } from '@/hooks/useGetCurrentGuild'
+import { Channel } from '@/types'
 
 export default function useChannelSocket(guildId: string, key: string) {
   const router = useRouter()
@@ -21,16 +22,18 @@ export default function useChannelSocket(guildId: string, key: string) {
       // });
     })
 
-    socket.on('edit_channel', (editedChannel) => {
+    socket.on('edit_channel', (editedChannel: Channel) => {
       console.log('edit_channel', editedChannel)
-      cache.setQueryData(key, (d) => {
-        const index = d?.findIndex((c) => c.id === editedChannel.id)
+      cache.setQueryData(key, (d: Channel[] | undefined): any => {
+        if (!d) return
+        const res = [...d]
+        const index = res.findIndex((c) => c.id === editedChannel.id)
         if (index !== -1) {
-          d[index] = editedChannel
+          res[index] = editedChannel
         } else if (editedChannel.isPublic) {
-          d.push(editedChannel)
+          res.push(editedChannel)
         }
-        return d
+        return res
       })
     })
 
