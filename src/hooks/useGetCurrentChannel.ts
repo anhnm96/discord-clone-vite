@@ -16,12 +16,4 @@ export function useGetCurrentChannel(guildId: string, channelId: string) {
   return computed(() => {
     return channels.value?.find((c) => c.id === channelId)
   })
-  // const result = ref()
-  // useQuery(key, {
-  //   onSuccess: (d) => {
-  //     result.value = d?.find((c) => c.id === channelId)
-  //   },
-  // })
-  // console.log(key, channelId, result.value)
-  // return result
 }

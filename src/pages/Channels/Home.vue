@@ -3,13 +3,31 @@
     <nav class="flex-grow p-2 bg-secondary">
       <router-link
         to="/channels/me"
-        class="flex items-center px-3 py-3 space-x-3 rounded  bg-modifier-selected"
+        class="
+          flex
+          items-center
+          px-3
+          py-3
+          space-x-3
+          rounded
+          bg-modifier-selected
+        "
       >
         <UsersIcon class="w-6 h-6" />
         <p class="font-semibold">Friends</p>
       </router-link>
       <h2
-        class="flex items-center justify-between mt-4 text-xs font-bold text-gray-400 uppercase  hover:text-gray-300"
+        class="
+          flex
+          items-center
+          justify-between
+          mt-4
+          text-xs
+          font-bold
+          text-gray-400
+          uppercase
+          hover:text-gray-300
+        "
       >
         <span>Direct Messages</span>
         <PlusIcon class="w-4 h-4" />
@@ -18,7 +36,14 @@
         <li
           v-for="dm in dms"
           :key="dm.id"
-          class="flex justify-between px-2 py-1  group hover:bg-modifier-hover hover:text-hover"
+          class="
+            flex
+            justify-between
+            px-2
+            py-1
+            group
+            hover:bg-modifier-hover hover:text-hover
+          "
         >
           <div class="flex items-center space-x-2">
             <Avatar :img="dm.user.image" :is-online="dm.user.isOnline" />
@@ -50,6 +75,7 @@ import { getUserDMs, closeDirectMessage } from '@/api/handler/dm'
 import { PlusIcon, UsersIcon, XIcon } from '@heroicons/vue/solid'
 import UserPanel from '@/components/UserPanel.vue'
 import { DirectMessage } from '@/types'
+import useFriendSocket from '@/api/ws/useFriendSocket'
 
 export default defineComponent({
   name: 'ChannelsHome',
@@ -63,6 +89,7 @@ export default defineComponent({
     const cache = useQueryClient()
     const router = useRouter()
     const route = useRoute()
+    useFriendSocket()
 
     const { data: dms } = useQuery<DirectMessage[]>(dmKey, () =>
       getUserDMs().then((res) => res.data)
