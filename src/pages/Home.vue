@@ -35,7 +35,7 @@
       </div>
     </nav>
     <div class="flex flex-grow">
-      <router-view />
+      <router-view :key="$route.path" />
     </div>
     <Dialog />
     <AddGuildModal v-if="showAddGuildModal" v-model="showAddGuildModal" />

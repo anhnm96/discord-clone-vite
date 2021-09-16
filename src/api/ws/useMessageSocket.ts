@@ -20,43 +20,69 @@ export default function useMessageSocket(channelId: string, key: string) {
       console.log('new_message', newMessage)
 
       cache.setQueryData(key, (d: any) => {
+        if (!d) return
+        const res = { pages: [...d.pages], pageParams: d.pageParams }
         console.log(d)
-        d?.pages[0].unshift(newMessage)
-        return d
+
+        const copy = [...res.pages[0]]
+        copy.unshift(newMessage)
+        res.pages[0] = copy
+        return res
       })
-      cache.invalidateQueries(key)
     })
 
     socket.on('edit_message', (editMessage: Message) => {
       console.log('edit_message', editMessage)
-      cache.setQueryData(key, (d) => {
-        let index = -1
-        let editId = -1
-        d?.pages.forEach((p, i) => {
-          editId = p.findIndex((m) => m.id === editMessage.id)
-          if (editId !== -1) index = i
-        })
+      cache.setQueryData(key, (d: any) => {
+        if (!d) return
+        let pageIndex = -1
+        let editIndex = -1
+        const res = { pages: [...d.pages], pageParams: d.pageParams }
 
-        if (index !== -1 && editId !== -1) {
-          d.pages[index][editId] = editMessage
+        for (let i = 0; i < res.pages.length; i++) {
+          const messages = res.pages[i]
+          editIndex = messages.findIndex(
+            (m: Message) => m.id === editMessage.id
+          )
+          if (editIndex !== -1) {
+            pageIndex = i
+            break
+          }
         }
-        return d
+
+        if (pageIndex !== -1 && editIndex !== -1) {
+          const copy = [...res.pages[pageIndex]]
+          copy[editIndex] = editMessage
+          res.pages[pageIndex] = copy
+        }
+        return res
       })
     })
 
     socket.on('delete_message', (toBeRemoved: Message) => {
       console.log('delete_message', toBeRemoved)
       cache.setQueryData(key, (d: any) => {
+        if (!d) return
         let index = -1
-        d?.pages.forEach((p, i) => {
-          if (p.findIndex((m) => m.id === toBeRemoved.id) !== -1) index = i
-        })
+        const res = { pages: [...d.pages], pageParams: d.pageParams }
+
+        for (let i = 0; i < res.pages.length; i++) {
+          const messages = res.pages[i]
+          const toBeRemovedIndex = messages.findIndex(
+            (m: Message) => m.id === toBeRemoved.id
+          )
+          if (toBeRemovedIndex !== -1) {
+            index = i
+            break
+          }
+        }
+
         if (index !== -1) {
-          d.pages[index] = d?.pages[index].filter(
-            (m) => m.id !== toBeRemoved.id
+          res.pages[index] = res.pages[index].filter(
+            (m: Message) => m.id !== toBeRemoved.id
           )
         }
-        return d
+        return res
       })
     })
 

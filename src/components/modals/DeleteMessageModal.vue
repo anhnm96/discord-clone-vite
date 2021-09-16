@@ -6,7 +6,7 @@
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <div
-      class="w-11/12 max-w-md pt-4 mx-auto space-y-4 rounded-md  bg-primary text-hover"
+      class="w-full max-w-md pt-4 mx-auto space-y-4 rounded-md  bg-primary text-hover"
     >
       <header class="flex items-center justify-start px-6">
         <ModalTitle class="text-xl font-bold uppercase"

@@ -95,7 +95,10 @@
     <AddChannelModal v-model="showAddChannelModal" :guild-id="guildId" />
     <UserPanel />
   </div>
-  <div class="flex flex-col flex-grow h-screen bg-primary">asd</div>
+  <GuildChat />
+  <!-- <div class="flex flex-col flex-grow h-screen bg-primary">
+    {{ selectedChannel }}
+  </div> -->
 </template>
 
 <script lang="ts">
@@ -119,6 +122,7 @@ import { getChannels } from '@/api/handler/channel'
 import useChannelSocket from '@/api/ws/useChannelSocket'
 import { Channel } from '@/types'
 import AddChannelModal from '@/components/modals/AddChannelModal.vue'
+import GuildChat from './GuildChat.vue'
 
 export default defineComponent({
   name: 'Guild',
@@ -132,11 +136,13 @@ export default defineComponent({
     GuildSettingsModal,
     AddChannelModal,
     ChannelItem,
+    GuildChat,
   },
   setup() {
     const route = useRoute()
     const userStore = useUser()
     const guildId = route.params.guildId as string
+    const channelId = route.params.channelId as string
     const key = cKey(guildId)
     const guild = useGetCurrentGuild(guildId)
     const showInviteModal = ref(false)
@@ -146,6 +152,10 @@ export default defineComponent({
     const { data: channels } = useQuery<Channel[]>(key, () =>
       getChannels(guildId).then((res) => res.data)
     )
+
+    const selectedChannel = computed(() => {
+      return channels.value?.find((c) => c.id === channelId)
+    })
 
     useChannelSocket(guildId, key)
 
@@ -161,6 +171,7 @@ export default defineComponent({
       showGuildSettingModal,
       showAddChannelModal,
       isOwner,
+      selectedChannel,
     }
   },
 })
