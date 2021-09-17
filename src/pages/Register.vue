@@ -3,86 +3,63 @@
     <div class="w-full max-w-lg space-y-4">
       <div class="flex justify-center">
         <img
-          class="w-20 h-20"
-          src="/src/assets/logo.png"
+          class="w-20 h-20 rounded-2xl"
+          src="/src/assets/discord.png"
           alt="logo"
-        >
+        />
       </div>
-      <div class="pt-4 pb-8 space-y-4 rounded-md px-content bg-primary">
-        <h2 class="text-2xl font-semibold text-center">
-          Welcome to Discord
-        </h2>
+      <div class="pt-4 pb-8 space-y-4 rounded-md px-content bg-secondary">
+        <h2 class="text-2xl font-semibold text-center">Welcome to Discord</h2>
         <div>
           <Form
-            v-slot="{errors, isSubmitting}"
+            v-slot="{ errors, isSubmitting }"
             :validation-schema="RegisterSchema"
             class="space-y-4"
             @submit="submit"
           >
             <div class="flex flex-col space-y-1.5">
-              <label
-                for="email"
-                class="text-sm uppercase"
-              >Email</label>
+              <label for="email" class="text-sm uppercase">Email</label>
               <Field
                 id="email"
                 name="email"
                 type="email"
-                class="px-4 py-2 bg-black border border-black rounded bg-opacity-10 border-opacity-30"
+                class="px-4 py-2 border border-black rounded bg-secondary-alt"
                 :class="[errors.email && 'border-red-400']"
               />
-              <ErrorMessage
-                class="text-red-400"
-                name="email"
-              />
+              <ErrorMessage class="text-red-400" name="email" />
             </div>
             <div class="flex flex-col space-y-1.5">
-              <label
-                for="username"
-                class="text-sm uppercase"
-              >Username</label>
+              <label for="username" class="text-sm uppercase">Username</label>
               <Field
                 id="username"
                 name="username"
                 type="text"
-                class="px-4 py-2 bg-black border border-black rounded bg-opacity-10 border-opacity-30"
+                class="px-4 py-2 border border-black rounded bg-secondary-alt"
                 :class="[errors.username && 'border-red-400']"
               />
-              <ErrorMessage
-                class="text-red-400"
-                name="username"
-              />
+              <ErrorMessage class="text-red-400" name="username" />
             </div>
             <div class="flex flex-col space-y-1.5">
-              <label
-                for="password"
-                class="text-sm uppercase"
-              >Password</label>
+              <label for="password" class="text-sm uppercase">Password</label>
               <Field
                 id="password"
                 name="password"
                 type="password"
-                class="px-4 py-2 bg-black border border-black rounded bg-opacity-10 border-opacity-30"
+                class="px-4 py-2 border border-black rounded bg-secondary-alt"
                 :class="[errors.password && 'border-red-400']"
               />
-              <ErrorMessage
-                class="text-red-400"
-                name="password"
-              />
+              <ErrorMessage class="text-red-400" name="password" />
             </div>
             <button
-              class="block w-full py-2 font-semibold rounded bg-purple"
-              :disabled="isSubmitting"
+              class="block w-full py-2 font-semibold text-white rounded  bg-purple"
+              :loading="isSubmitting"
               type="submit"
             >
               Register
             </button>
             <p>
               Already have an account?
-              <router-link
-                to="/login"
-                class="text-purple"
-              >
+              <router-link to="/login" class="text-purple">
                 Sign In
               </router-link>
             </p>
@@ -128,5 +105,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
+<style></style>
