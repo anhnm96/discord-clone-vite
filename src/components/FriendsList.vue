@@ -90,7 +90,7 @@ export default defineComponent({
 
       if (data) {
         cache.invalidateQueries(dmKey)
-        router.push({ name: 'DM', params: { id: data.id } })
+        router.push({ name: 'DM', params: { channelId: data.id } })
       }
     }
 

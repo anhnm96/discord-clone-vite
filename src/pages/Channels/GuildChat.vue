@@ -25,8 +25,7 @@
       </div>
     </section>
     <main class="flex flex-grow">
-      <!-- <ChatScreen /> -->
-      <div class="flex-grow"></div>
+      <ChatScreen />
       <aside
         class="flex-shrink-0 pb-4 w-60 bg-secondary"
         :aria-label="`Members list for ${currentChannel?.name} (channel)`"
@@ -45,25 +44,13 @@
             </h2>
             <div v-for="member in online" :key="member.id" role="listitem">
               <div
-                class="
-                  flex
-                  items-center
-                  px-2
-                  py-1
-                  space-x-2
-                  rounded
-                  hover:bg-modifier-hover hover:text-white
-                "
+                class="flex items-center px-2 py-1 space-x-2 rounded  hover:bg-modifier-hover hover:text-white"
               >
-                <div>
-                  <img
-                    class="w-8 h-8 rounded-full"
-                    :src="member.image"
-                    :alt="`${member.username}, ${
-                      member.isOnline ? 'Online' : 'Offline'
-                    }`"
-                  />
-                </div>
+                <Avatar
+                  :img="member.image"
+                  :is-online="member.isOnline"
+                  :username="member.username"
+                />
                 <div>
                   <span>{{ member.username }}</span>
                 </div>
@@ -78,15 +65,7 @@
             </h2>
             <div v-for="member in offline" :key="member.id" role="listitem">
               <div
-                class="
-                  flex
-                  items-center
-                  px-2
-                  py-1
-                  space-x-2
-                  rounded
-                  hover:bg-modifier-hover hover:text-white
-                "
+                class="flex items-center px-2 py-1 space-x-2 rounded  hover:bg-modifier-hover hover:text-white"
               >
                 <Avatar
                   :img="member.image"

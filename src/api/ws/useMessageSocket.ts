@@ -22,8 +22,6 @@ export default function useMessageSocket(channelId: string, key: string) {
       cache.setQueryData(key, (d: any) => {
         if (!d) return
         const res = { pages: [...d.pages], pageParams: d.pageParams }
-        console.log(d)
-
         const copy = [...res.pages[0]]
         copy.unshift(newMessage)
         res.pages[0] = copy

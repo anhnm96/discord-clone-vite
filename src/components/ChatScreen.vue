@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full">
+  <div class="flex flex-col flex-auto h-full">
     <div
       class="relative flex flex-col justify-end flex-auto h-0 overflow-hidden"
     >

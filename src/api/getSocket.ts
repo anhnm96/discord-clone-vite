@@ -9,5 +9,8 @@ const socket = socketIOClient(`http://localhost:4000/ws`, {
 socket.connect()
 
 export default function getSocket() {
-  return socket
+  return socketIOClient(`http://localhost:4000/ws`, {
+    transports: ['websocket'],
+    upgrade: false,
+  })
 }

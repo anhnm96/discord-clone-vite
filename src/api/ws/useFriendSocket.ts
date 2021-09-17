@@ -40,7 +40,9 @@ export default function useFriendSocket() {
         const res = [...data]
         const index = res.findIndex((m) => m.id === memberId)
         if (index !== -1) {
-          res[index].isOnline = true
+          const clonedObj = { ...res[index] }
+          clonedObj.isOnline = true
+          res[index] = clonedObj
         }
         return res
       })
@@ -53,7 +55,9 @@ export default function useFriendSocket() {
         const res = [...data]
         const index = res.findIndex((m) => m.id === memberId)
         if (index !== -1) {
-          res[index].isOnline = false
+          const clonedObj = { ...res[index] }
+          clonedObj.isOnline = false
+          res[index] = clonedObj
         }
         return res
       })

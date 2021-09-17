@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="showHeader"
+    v-if="!showHeader"
     class="relative py-0.5 mt-5 hover:bg-secondary px-18"
     @mouseenter="showMessageActions = true"
     @mouseleave="showMessageActions = false"
@@ -17,7 +17,9 @@
         <p class="font-medium leading-none text-white">
           {{ message.user.username }}
         </p>
-        <p class="text-xs text-muted">{{ getTime(message.createdAt) }}</p>
+        <time :datetime="message.createdAt" class="text-xs text-muted">{{
+          getTime(message.createdAt)
+        }}</time>
       </div>
       <p v-if="!isEditing" class="leading-snug whitespace-pre-wrap">
         {{ message.text }}
@@ -102,6 +104,7 @@
     </div>
   </div>
   <DeleteMessageModal
+    v-if="showDeleteMessageModal"
     v-model="showDeleteMessageModal"
     :message="message"
     @delete="deleteMessage(message.id)"

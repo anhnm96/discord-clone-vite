@@ -30,7 +30,7 @@ export default defineComponent({
   components: { PlusCircleIcon },
   setup() {
     const route = useRoute()
-    const channelId = route.params.id as string
+    const channelId = route.params.channelId as string
     const socket = getSocket()
     const userStore = useUser()
     const channelStore = useChannel()

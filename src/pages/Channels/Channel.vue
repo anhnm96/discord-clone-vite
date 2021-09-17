@@ -44,7 +44,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
-    const channelId = route.params.id as string
+    const channelId = route.params.channelId as string
     const channel = useGetCurrentDM(channelId)
 
     return { channel }

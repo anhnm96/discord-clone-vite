@@ -1,11 +1,11 @@
 <template>
   <div v-if="isLoading">Loading...</div>
-  <section v-if="messages">
+  <section v-if="messages" class="flex flex-col-reverse">
     <MessageItem
       v-for="(message, index) in messages"
       :key="message.id"
       :message="message"
-      :show-header="!checkMessageCompact(message, messages[index - 1])"
+      :show-header="checkMessageCompact(message, messages[index + 1])"
     />
   </section>
 </template>
@@ -25,7 +25,7 @@ export default defineComponent({
   components: { MessageItem },
   setup() {
     const route = useRoute()
-    const channelId = route.params.id as string
+    const channelId = route.params.channelId as string
     const qKey = `messages-${channelId}`
     const hasMore = ref(false)
     useMessageSocket(channelId, qKey)
@@ -47,12 +47,11 @@ export default defineComponent({
     )
 
     const messages = computed(() => {
-      console.log('updated')
-      return data.value?.pages.flatMap((p: any) => p).reverse()
+      return data.value?.pages.flatMap((p: any) => p)
     })
 
     function checkMessageCompact(m1: Message, m2: Message) {
-      if (!m1 || !m2) return
+      if (!m2) return false // last message
       if (m1.user.id !== m2.user.id) return false
       return getTimeDifference(m1.createdAt, m2.createdAt) <= 5
     }

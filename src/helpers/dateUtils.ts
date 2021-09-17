@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
+import utc from 'dayjs/plugin/utc'
 
+dayjs.extend(utc)
 dayjs.extend(calendar)
 
 export function getTime(createdAt: string) {
-  return dayjs(createdAt).calendar()
+  return dayjs(createdAt).utc(true).local().calendar()
 }
 
 export function getShortenedTime(createdAt: string) {
