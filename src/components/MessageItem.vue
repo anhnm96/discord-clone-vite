@@ -2,6 +2,7 @@
   <div
     v-if="!showHeader"
     class="relative py-0.5 mt-5 hover:bg-secondary px-18"
+    role="listitem"
     @mouseenter="showMessageActions = true"
     @mouseleave="showMessageActions = false"
   >
@@ -59,6 +60,7 @@
   <div
     v-else
     class="relative group px-18 hover:bg-secondary"
+    role="listitem"
     @mouseenter="showMessageActions = true"
     @mouseleave="showMessageActions = false"
   >

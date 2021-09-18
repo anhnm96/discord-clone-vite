@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoading">Loading...</div>
-  <section v-if="messages" class="flex flex-col-reverse">
+  <section v-if="messages" class="flex flex-col-reverse" role="log">
     <MessageItem
       v-for="(message, index) in messages"
       :key="message.id"
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useInfiniteQuery } from 'vue-query'
 import { getMessages } from '@/api/handler/messages'
@@ -23,7 +23,8 @@ import { getTimeDifference } from '@/helpers'
 export default defineComponent({
   name: 'MessageList',
   components: { MessageItem },
-  setup() {
+  emits: ['scrollBottom'],
+  setup(_props, { emit }) {
     const route = useRoute()
     const channelId = route.params.channelId as string
     const qKey = `messages-${channelId}`
@@ -48,6 +49,13 @@ export default defineComponent({
 
     const messages = computed(() => {
       return data.value?.pages.flatMap((p: any) => p)
+    })
+    watch(messages, (newVal, oldVal) => {
+      if (newVal?.[0] !== oldVal?.[0]) {
+        nextTick(() => {
+          emit('scrollBottom')
+        })
+      }
     })
 
     function checkMessageCompact(m1: Message, m2: Message) {

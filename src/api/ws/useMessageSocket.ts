@@ -23,7 +23,11 @@ export default function useMessageSocket(channelId: string, key: string) {
         if (!d) return
         const res = { pages: [...d.pages], pageParams: d.pageParams }
         const copy = [...res.pages[0]]
-        copy.unshift(newMessage)
+        if (newMessage.user.id === userStore.current?.id) {
+          copy.splice(0, 1, newMessage)
+        } else {
+          copy.unshift(newMessage)
+        }
         res.pages[0] = copy
         return res
       })

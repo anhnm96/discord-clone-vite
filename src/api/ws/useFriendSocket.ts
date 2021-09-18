@@ -4,7 +4,7 @@ import getSocket from '@/api/getSocket'
 import { User } from '@/types'
 import { useUser } from '@/stores/user'
 import { useHome } from '@/stores/home'
-import { fKey } from '@/helpers'
+import { fKey, dmKey } from '@/helpers'
 
 export default function useFriendSocket() {
   const cache = useQueryClient()
@@ -46,6 +46,20 @@ export default function useFriendSocket() {
         }
         return res
       })
+      cache.setQueryData(dmKey, (data: any | undefined): any => {
+        if (!data) return
+        const res = [...data]
+        const index = res.findIndex((m) => m.user.id === memberId)
+        if (index !== -1) {
+          const clonedObj = { ...res[index] }
+          console.log(clonedObj)
+          const clonedUser = { ...clonedObj.user }
+          clonedUser.isOnline = true
+          clonedObj.user = clonedUser
+          res[index] = clonedObj
+        }
+        return res
+      })
     })
 
     socket.on('toggle_offline', (memberId: string) => {
@@ -57,6 +71,20 @@ export default function useFriendSocket() {
         if (index !== -1) {
           const clonedObj = { ...res[index] }
           clonedObj.isOnline = false
+          res[index] = clonedObj
+        }
+        return res
+      })
+      cache.setQueryData(dmKey, (data: any | undefined): any => {
+        if (!data) return
+        const res = [...data]
+        const index = res.findIndex((m) => m.user.id === memberId)
+        if (index !== -1) {
+          const clonedObj = { ...res[index] }
+          console.log(clonedObj)
+          const clonedUser = { ...clonedObj.user }
+          clonedUser.isOnline = false
+          clonedObj.user = clonedUser
           res[index] = clonedObj
         }
         return res
