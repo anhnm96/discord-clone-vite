@@ -1,15 +1,15 @@
 // @ts-ignore
 import socketIOClient from 'socket.io-client'
 
-const socket = socketIOClient(`http://localhost:4000/ws`, {
-  transports: ['websocket'],
-  upgrade: false,
-})
+// const socket = socketIOClient(import.meta.env.VITE_BASE_SOCKET, {
+//   transports: ['websocket'],
+//   upgrade: false,
+// })
 
-socket.connect()
+// socket.connect()
 
 export default function getSocket() {
-  return socketIOClient(`http://localhost:4000/ws`, {
+  return socketIOClient(import.meta.env.VITE_BASE_SOCKET, {
     transports: ['websocket'],
     upgrade: false,
   })
