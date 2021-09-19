@@ -207,7 +207,13 @@ export default defineComponent({
       document.removeEventListener('keydown', handleKeydownEvent)
     })
 
+    function test(e: any) {
+      console.log(e)
+      showMessageActions.value = false
+    }
+
     return {
+      test,
       getShortenedTime,
       getTime,
       showDeleteMessageModal,

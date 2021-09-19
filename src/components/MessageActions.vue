@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute right-0 pl-8 pr-18 -top-6">
+  <div class="absolute right-0 z-10 pl-8 pr-18 -top-6">
     <div class="flex rounded bg-primary shadow-msg">
       <button
         class="grid w-8 h-8  hover:text-hover hover:bg-modifier-hover place-items-center"

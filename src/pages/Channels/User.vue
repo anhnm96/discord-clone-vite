@@ -7,9 +7,19 @@
       </div>
       <div class="bg-divider w-0.25 h-6" />
       <div class="flex space-x-2">
-        <div class="py-0.5 px-2" @click="activeTab = 'Online'">Online</div>
-        <div class="py-0.5 px-2" @click="activeTab = 'All'">All</div>
-        <div class="py-0.5 px-2" @click="activeTab = 'Pending'">Pending</div>
+        <!-- <div class="py-0.5 px-2" @click="activeTab = 'Online'">Online</div> -->
+        <div
+          class="py-0.5 px-2 cursor-pointer hover:text-white"
+          @click="activeTab = 'All'"
+        >
+          All
+        </div>
+        <div
+          class="py-0.5 px-2 cursor-pointer hover:text-white"
+          @click="activeTab = 'Pending'"
+        >
+          Pending
+        </div>
         <button
           class="py-0.5 px-2 bg-green-600 text-white rounded"
           @click="showAddFriendModal = true"

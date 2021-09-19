@@ -23,7 +23,7 @@
       </div>
     </section>
     <main class="flex-grow">
-      <ChatScreen />
+      <ChatScreen :channel-name="channel?.user.username" />
     </main>
   </div>
 </template>

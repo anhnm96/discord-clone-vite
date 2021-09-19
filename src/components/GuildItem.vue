@@ -1,11 +1,9 @@
 <template>
   <div class="relative flex justify-center">
-    <div
-      class="absolute left-0 w-1 h-10 -translate-y-1/2 bg-white  top-1/2 rounded-tr-md rounded-br-md"
-    />
     <router-link
       :to="`/channels/${guild.id}/${guild.default_channel_id}`"
-      class="flex items-center justify-center w-12 h-12 rounded-full bg-primary"
+      class="flex items-center justify-center w-12 h-12 rounded-full  peer bg-primary"
+      active-class="link-active"
     >
       <img
         v-if="guild.icon"
@@ -15,11 +13,14 @@
       />
       <div
         v-else
-        class="grid w-full h-full font-semibold text-center transition rounded-full  place-items-center hover:text-white text-hover hover:bg-purple"
+        class="grid w-full h-full font-semibold transition rounded-full  place-items-center hover:text-white text-hover hover:bg-purple"
       >
         {{ guild.name[0] }}
       </div>
     </router-link>
+    <div
+      class="absolute left-0 w-1 h-2 transition-all -translate-y-1/2 bg-white  peer-hover:h-5 top-1/2 rounded-tr-md rounded-br-md"
+    />
   </div>
 </template>
 

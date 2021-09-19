@@ -13,7 +13,7 @@
       <li
         v-for="friend in friendsList"
         :key="friend.id"
-        class="p-3 rounded-md hover:bg-secondary"
+        class="p-3 rounded-md cursor-pointer hover:bg-secondary"
         @click="getDMChannel(friend)"
       >
         <div class="flex items-center justify-between">
@@ -36,11 +36,11 @@
               <ChatAltIcon class="w-5 h-5" />
             </button>
             <button
-              aria-label="more"
+              aria-label="remove"
               class="grid w-10 h-10 rounded-full  hover:bg-gray-600 place-items-center bg-modifier-selected"
               @click.stop="handleRemoveFriend(friend)"
             >
-              <DotsVerticalIcon class="w-5 h-5" />
+              <TrashIcon class="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -56,13 +56,13 @@ import { useQuery, useQueryClient } from 'vue-query'
 import { getFriends, removeFriend } from '@/api/handler/account'
 import { getOrCreateDirectMessage } from '@/api/handler/dm'
 import { fKey, dmKey } from '@/helpers'
-import { DotsVerticalIcon, ChatAltIcon } from '@heroicons/vue/solid'
+import { ChatAltIcon, TrashIcon } from '@heroicons/vue/solid'
 import { User } from '@/types'
 import { useDialog } from '@/components/base/Dialog/useDialog'
 
 export default defineComponent({
   name: 'FriendsList',
-  components: { DotsVerticalIcon, ChatAltIcon },
+  components: { ChatAltIcon, TrashIcon },
   setup() {
     const router = useRouter()
     const cache = useQueryClient()

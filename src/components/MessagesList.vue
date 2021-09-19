@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading">Loading...</div>
+  <div v-if="isLoading" class="px-4">Loading...</div>
   <section v-if="messages" class="flex flex-col-reverse" role="log">
     <MessageItem
       v-for="(message, index) in messages"

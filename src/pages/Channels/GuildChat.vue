@@ -25,7 +25,7 @@
       </div>
     </section>
     <main class="flex flex-grow">
-      <ChatScreen />
+      <ChatScreen :channel-name="currentChannel?.name" />
       <aside
         class="flex-shrink-0 pb-4 w-60 bg-secondary"
         :aria-label="`Members list for ${currentChannel?.name} (channel)`"

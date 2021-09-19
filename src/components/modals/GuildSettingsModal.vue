@@ -52,6 +52,7 @@
             <h5 class="font-semibold text-white">Additional Configuration</h5>
             <div class="flex justify-between">
               <b-button
+                type="button"
                 :loading="invalidatingInvites"
                 class="px-4 py-2 transition rounded"
                 :class="[

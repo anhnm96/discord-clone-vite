@@ -2,15 +2,16 @@
   <div class="flex h-screen">
     <nav class="flex-shrink-0 py-3 w-18 bg-tertiary">
       <div class="relative flex justify-center">
-        <div
-          class="absolute left-0 w-1 h-10 -translate-y-1/2 bg-white  top-1/2 rounded-tr-md rounded-br-md"
-        />
         <router-link
           to="/channels/me"
-          class="flex items-center justify-center w-12 h-12 text-white  rounded-2xl bg-purple"
+          class="flex items-center justify-center w-12 h-12 text-white  peer rounded-2xl bg-purple"
+          active-class="link-active"
         >
           <img src="/src/assets/me.svg" alt="logo" class="w-7 h-7" />
         </router-link>
+        <div
+          class="absolute left-0 w-1 h-2 transition-all -translate-y-1/2 bg-white  peer-hover:h-5 top-1/2 rounded-tr-md rounded-br-md"
+        />
       </div>
       <div class="bg-divider h-0.5 w-8 mx-auto my-3" />
       <div>
@@ -20,15 +21,15 @@
           </li>
           <li>
             <div class="relative flex justify-center">
-              <div
-                class="absolute left-0 w-1 h-10 -translate-y-1/2 bg-white  top-1/2 rounded-tr-md rounded-br-md"
-              />
               <button
-                class="flex items-center justify-center w-12 h-12 text-green-500 transition ease-out rounded-full  hover:rounded-2xl hover:text-white hover:bg-green-600 bg-primary"
+                class="flex items-center justify-center w-12 h-12 text-green-500 transition ease-out rounded-full  peer hover:rounded-2xl hover:text-white hover:bg-green-600 bg-primary"
                 @click="showAddGuildModal = true"
               >
                 <PlusIcon class="w-5 h-5" />
               </button>
+              <div
+                class="absolute left-0 w-1 h-2 transition-all -translate-y-1/2 bg-white  peer-hover:h-5 top-1/2 rounded-tr-md rounded-br-md"
+              />
             </div>
           </li>
         </ul>
@@ -71,4 +72,8 @@ export default defineComponent({
 })
 </script>
 
-<style></style>
+<style>
+.link-active + div {
+  height: 40px;
+}
+</style>

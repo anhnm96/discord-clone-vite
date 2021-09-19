@@ -1,27 +1,32 @@
 <template>
-  <router-link
-    :to="`/channels/${guildId}/${channel.id}`"
-    class="flex items-center px-2 py-2 rounded  bg-modifier-selected hover:bg-modifier-hover"
-  >
-    <HashtagIcon v-if="channel.isPublic" class="w-5 h-5 text-muted" />
-    <LockClosedIcon v-else class="w-5 h-5 text-muted" />
+  <div class="relative hover:bg-modifier-hover hover:text-hover">
+    <router-link
+      :to="`/channels/${guildId}/${channel.id}`"
+      class="flex items-center py-2 pl-2 rounded pr-11"
+      active-class="text-white bg-modifier-selected"
+    >
+      <HashtagIcon v-if="channel.isPublic" class="w-5 h-5 text-muted" />
+      <LockClosedIcon v-else class="w-5 h-5 text-muted" />
 
-    <p class="ml-2 font-semibold text-white truncate">{{ channel.name }}</p>
-    <div class="flex items-center ml-auto space-x-1">
-      <button class="" aria-label="Create invite">
+      <p class="ml-2 font-semibold truncate">{{ channel.name }}</p>
+    </router-link>
+    <div
+      class="absolute flex items-center ml-auto space-x-1 -translate-y-1/2  top-1/2 right-2"
+    >
+      <button aria-label="Create invite">
         <UserAddIcon class="w-4 h-4" />
       </button>
       <button aria-label="Edit channel" @click="showChannelSettingModal = true">
         <CogIcon class="w-4 h-4" />
       </button>
     </div>
-  </router-link>
-  <ChannelSettingsModal
-    v-if="showChannelSettingModal"
-    v-model="showChannelSettingModal"
-    :channel="channel"
-    :guild-id="guildId"
-  />
+    <ChannelSettingsModal
+      v-if="showChannelSettingModal"
+      v-model="showChannelSettingModal"
+      :channel="channel"
+      :guild-id="guildId"
+    />
+  </div>
 </template>
 
 <script lang="ts">

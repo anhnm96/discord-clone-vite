@@ -141,6 +141,6 @@ export default defineComponent({
   @apply absolute top-full left-0 w-full p-2;
 }
 .dropdown-content {
-  @apply bg-floating text-sm font-semibold p-2 rounded;
+  @apply bg-floating text-sm font-semibold p-2 rounded relative z-50;
 }
 </style>

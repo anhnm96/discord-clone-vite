@@ -17,11 +17,24 @@
               alt="logo"
             />
           </div>
-          <h1 class="text-4xl font-bold truncate select-none">Channel name</h1>
-          <p class="select-none">
-            This is the beginning of your direct message history with
-            <b>Channel name</b>
-          </p>
+          <template v-if="$route.params.guildId">
+            <h1 class="text-4xl font-bold text-white select-none">
+              Welcome to <span class="italic">#{{ channelName }}!</span>
+            </h1>
+            <p class="select-none">
+              This is the start of the
+              <span class="italic">#{{ channelName }}</span> channel.
+            </p>
+          </template>
+          <template v-else>
+            <h1 class="text-4xl font-bold text-white truncate select-none">
+              {{ channelName }}
+            </h1>
+            <p class="select-none">
+              This is the beginning of your direct message history with
+              <b>@{{ channelName }}</b>
+            </p>
+          </template>
         </div>
         <div class="m-4 bg-divider h-0.25"></div>
         <MessagesList @scroll-bottom="handleScrollBottom" />
@@ -41,6 +54,12 @@ import MessageInput from '@/components/MessageInput.vue'
 export default defineComponent({
   name: 'ChatScreen',
   components: { MessagesList, MessageInput },
+  props: {
+    channelName: {
+      type: String,
+      default: '',
+    },
+  },
   setup() {
     const scrollEl = ref()
 
