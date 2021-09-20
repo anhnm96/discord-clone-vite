@@ -60,6 +60,16 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/:link',
+    name: 'Invite',
+    component: () => import('./pages/Invite.vue'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('./pages/NotFound.vue'),
+  },
 ]
 
 const router = createRouter({

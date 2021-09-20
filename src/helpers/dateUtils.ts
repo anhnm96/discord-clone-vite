@@ -1,16 +1,14 @@
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
-import utc from 'dayjs/plugin/utc'
 
-dayjs.extend(utc)
 dayjs.extend(calendar)
 
 export function getTime(createdAt: string) {
-  return dayjs(createdAt).utc(true).local().calendar()
+  return dayjs(createdAt).calendar()
 }
 
 export function getShortenedTime(createdAt: string) {
-  return dayjs(createdAt).utc(true).local().format('h:mm A')
+  return dayjs(createdAt).format('h:mm A')
 }
 
 export function getTimeDifference(date1: string, date2: string) {

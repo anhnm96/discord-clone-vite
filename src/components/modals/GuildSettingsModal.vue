@@ -65,6 +65,7 @@
                 Invalidate Links
               </b-button>
               <button
+                type="button"
                 class="px-4 py-2 transition bg-gray-600 rounded  hover:bg-gray-500"
               >
                 Bans

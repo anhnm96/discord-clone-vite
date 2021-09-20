@@ -1,13 +1,24 @@
 <template>
-  <div class="flex h-screen">
+  <div class="flex h-screen overflow-hidden">
     <nav class="flex-shrink-0 py-3 w-18 bg-tertiary">
       <div class="relative flex justify-center">
         <router-link
           to="/channels/me"
-          class="flex items-center justify-center w-12 h-12 text-white  peer rounded-2xl bg-purple"
+          class="relative flex items-center justify-center w-12 h-12 text-white  peer rounded-2xl bg-purple"
           active-class="link-active"
         >
           <img src="/src/assets/me.svg" alt="logo" class="w-7 h-7" />
+          <div
+            v-if="homeStore.notiCount"
+            class="absolute grid p-1 rounded-full  -bottom-1 -right-1 place-items-center bg-tertiary"
+          >
+            <div
+              class="px-1 text-xs font-semibold text-center text-white bg-red-500 rounded-lg "
+              style="min-width: 16px; min-height: 16px"
+            >
+              {{ homeStore.notiCount }}
+            </div>
+          </div>
         </router-link>
         <div
           class="absolute left-0 w-1 h-2 transition-all -translate-y-1/2 bg-white  peer-hover:h-5 top-1/2 rounded-tr-md rounded-br-md"
@@ -44,7 +55,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { PlusIcon } from '@heroicons/vue/outline'
 import GuildItem from '@/components/GuildItem.vue'
 import Dialog from '@/components/base/Dialog/Dialog.vue'
@@ -52,6 +64,7 @@ import AddGuildModal from '@/components/modals/AddGuildModal.vue'
 import { useGetGuildList } from '@/hooks/useGetCurrentGuild'
 import useGuildSocket from '@/api/ws/useGuildSocket'
 import useGlobalSocket from '@/api/ws/useGlobalSocket'
+import { useHome } from '@/stores/home'
 
 export default defineComponent({
   name: 'PageHome',
@@ -62,12 +75,23 @@ export default defineComponent({
     PlusIcon,
   },
   setup() {
+    const route = useRoute()
     useGlobalSocket()
     useGuildSocket()
     const showAddGuildModal = ref(false)
     const guilds = useGetGuildList()
+    const homeStore = useHome()
 
-    return { showAddGuildModal, guilds }
+    watch(
+      () => route.path,
+      (newVal) => {
+        if (newVal.startsWith('/channels/me')) {
+          homeStore.reset()
+        }
+      }
+    )
+
+    return { showAddGuildModal, guilds, homeStore }
   },
 })
 </script>

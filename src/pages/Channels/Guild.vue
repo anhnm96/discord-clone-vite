@@ -84,6 +84,7 @@
         :key="channel.id"
         :channel="channel"
         :guild-id="guildId"
+        :is-owner="isOwner"
       />
     </nav>
     <InviteModal v-if="showInviteModal" v-model="showInviteModal" />

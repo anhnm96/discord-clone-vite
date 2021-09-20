@@ -11,6 +11,7 @@
       <p class="ml-2 font-semibold truncate">{{ channel.name }}</p>
     </router-link>
     <div
+      v-if="isOwner"
       class="absolute flex items-center ml-auto space-x-1 -translate-y-1/2  top-1/2 right-2"
     >
       <button aria-label="Create invite">
@@ -57,6 +58,10 @@ export default defineComponent({
     guildId: {
       type: String,
       required: true,
+    },
+    isOwner: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {

@@ -50,13 +50,13 @@
               />
               <ErrorMessage class="text-red-400" name="password" />
             </div>
-            <button
+            <b-button
               class="block w-full py-2 font-semibold text-white rounded  bg-purple"
               :loading="isSubmitting"
               type="submit"
             >
               Register
-            </button>
+            </b-button>
             <p>
               Already have an account?
               <router-link to="/login" class="text-purple">
