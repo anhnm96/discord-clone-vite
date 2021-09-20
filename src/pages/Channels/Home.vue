@@ -3,10 +3,15 @@
     <nav class="flex-grow p-2 bg-secondary">
       <router-link
         to="/channels/me"
-        class="flex items-center px-3 py-3 space-x-3 rounded  bg-modifier-selected"
+        class="flex items-center px-3 py-3 rounded bg-modifier-selected"
       >
         <UsersIcon class="w-6 h-6" />
-        <p class="font-semibold">Friends</p>
+        <p class="ml-3 font-semibold">Friends</p>
+        <PingIcon
+          v-if="homeStore.requestCount > 0"
+          class="ml-auto"
+          :count="homeStore.requestCount"
+        />
       </router-link>
       <h2
         class="flex items-center justify-between mt-4 text-xs font-bold text-gray-400 uppercase  hover:text-gray-300"
@@ -56,6 +61,7 @@ import { PlusIcon, UsersIcon, XIcon } from '@heroicons/vue/solid'
 import UserPanel from '@/components/UserPanel.vue'
 import { DirectMessage } from '@/types'
 import useFriendSocket from '@/api/ws/useFriendSocket'
+import { useHome } from '@/stores/home'
 
 export default defineComponent({
   name: 'ChannelsHome',
@@ -70,6 +76,7 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     useFriendSocket()
+    const homeStore = useHome()
 
     const { data: dms } = useQuery<DirectMessage[]>(dmKey, () =>
       getUserDMs().then((res) => res.data)
@@ -85,7 +92,7 @@ export default defineComponent({
       }
     }
 
-    return { dms, handleCloseDM }
+    return { dms, handleCloseDM, homeStore }
   },
 })
 </script>

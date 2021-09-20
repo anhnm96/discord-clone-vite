@@ -12,12 +12,7 @@
             v-if="homeStore.notiCount"
             class="absolute grid p-1 rounded-full  -bottom-1 -right-1 place-items-center bg-tertiary"
           >
-            <div
-              class="px-1 text-xs font-semibold text-center text-white bg-red-500 rounded-lg "
-              style="min-width: 16px; min-height: 16px"
-            >
-              {{ homeStore.notiCount }}
-            </div>
+            <PingIcon :count="homeStore.notiCount" />
           </div>
         </router-link>
         <div

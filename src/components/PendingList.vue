@@ -73,7 +73,7 @@ export default defineComponent({
   name: 'PendingList',
   components: { CheckIcon, XIcon },
   setup() {
-    const { data: requests } = useQuery<FriendRequest[]>('requests', () =>
+    const { data: requests } = useQuery<FriendRequest[]>(rKey, () =>
       getPendingRequests().then((res) => res.data)
     )
     // reset requestCount when pending list is shown
@@ -96,7 +96,6 @@ export default defineComponent({
       const { data } = await declineFriendRequest(request.id)
       if (data) {
         cache.setQueryData(rKey, (d: any) => {
-          console.log(d)
           return d?.filter((r: FriendRequest) => r.id !== request.id)
         })
       }

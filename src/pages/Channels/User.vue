@@ -15,10 +15,23 @@
           All
         </div>
         <div
-          class="py-0.5 px-2 cursor-pointer hover:text-white"
+          class="
+            py-0.5
+            px-2
+            cursor-pointer
+            hover:text-white
+            relative
+            space-x-2
+            flex
+            items-center
+          "
           @click="activeTab = 'Pending'"
         >
-          Pending
+          <span>Pending</span>
+          <PingIcon
+            v-if="homeStore.requestCount > 0"
+            :count="homeStore.requestCount"
+          />
         </div>
         <button
           class="py-0.5 px-2 bg-green-600 text-white rounded"
@@ -41,6 +54,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { UsersIcon } from '@heroicons/vue/solid'
+import { useHome } from '@/stores/home'
 import PendingList from '@/components/PendingList.vue'
 import FriendsList from '@/components/FriendsList.vue'
 import AddFriendModal from '@/components/modals/AddFriendModal.vue'
@@ -56,8 +70,9 @@ export default defineComponent({
   setup() {
     const showAddFriendModal = ref(false)
     const activeTab = ref('All')
+    const homeStore = useHome()
 
-    return { showAddFriendModal, activeTab }
+    return { showAddFriendModal, activeTab, homeStore }
   },
 })
 </script>
