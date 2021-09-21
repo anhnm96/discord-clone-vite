@@ -54,14 +54,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useQuery, useQueryClient } from 'vue-query'
+import { useQueryClient } from 'vue-query'
 import { dmKey } from '@/helpers'
-import { getUserDMs, closeDirectMessage } from '@/api/handler/dm'
+import { closeDirectMessage } from '@/api/handler/dm'
 import { PlusIcon, UsersIcon, XIcon } from '@heroicons/vue/solid'
 import UserPanel from '@/components/UserPanel.vue'
 import { DirectMessage } from '@/types'
 import useFriendSocket from '@/api/ws/useFriendSocket'
 import { useHome } from '@/stores/home'
+import { useGetDMList } from '@/hooks/useGetCurrentDM'
 
 export default defineComponent({
   name: 'ChannelsHome',
@@ -78,9 +79,7 @@ export default defineComponent({
     useFriendSocket()
     const homeStore = useHome()
 
-    const { data: dms } = useQuery<DirectMessage[]>(dmKey, () =>
-      getUserDMs().then((res) => res.data)
-    )
+    const { data: dms } = useGetDMList()
 
     async function handleCloseDM(dm: DirectMessage) {
       await closeDirectMessage(dm.id)

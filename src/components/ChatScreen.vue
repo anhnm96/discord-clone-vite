@@ -40,7 +40,7 @@
         <MessagesList @scroll-bottom="handleScrollBottom" />
       </div>
     </div>
-    <div class="flex-shrink-0 px-4 pb-6">
+    <div class="relative flex-shrink-0 px-4 pb-6">
       <MessageInput />
     </div>
   </div>

@@ -1,5 +1,7 @@
 <template>
-  <p v-if="typingString">{{ typingString }}</p>
+  <p v-show="typingString" class="absolute text-xs italic left-4 -top-4">
+    {{ typingString }}...
+  </p>
   <div class="flex rounded-lg bg-textarea">
     <button class="self-start px-4 py-2 text-gray-400 hover:text-gray-300">
       <PlusCircleIcon class="w-6 h-6" />
@@ -24,16 +26,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useQueryClient } from 'vue-query'
+import { useQueryClient } from 'vue-query'
 import { PlusCircleIcon } from '@heroicons/vue/solid'
-import { cKey, dmKey } from '@/helpers'
-import { DirectMessage } from '@/types'
 import getSocket from '@/api/getSocket'
 import { useUser } from '@/stores/user'
 import { useChannel } from '@/stores/channel'
 import { sendMessage } from '@/api/handler/messages'
+import { useGetCurrentDM } from '@/hooks/useGetCurrentDM'
+import { useGetCurrentChannel } from '@/hooks/useGetCurrentChannel'
 
 export default defineComponent({
   name: 'MessageInput',
@@ -41,15 +43,16 @@ export default defineComponent({
   setup() {
     const cache = useQueryClient()
     const route = useRoute()
+    const guildId = route.params.guildId as string
     const channelId = route.params.channelId as string
     const socket = getSocket()
     const userStore = useUser()
     const channelStore = useChannel()
     const isTyping = ref(false)
-    const qKey = route.name === 'DM' ? dmKey : cKey(channelId)
-    const { data } = useQuery<DirectMessage[]>(qKey)
+    const channel: any = guildId
+      ? useGetCurrentChannel(guildId, channelId)
+      : useGetCurrentDM(channelId)
 
-    const channel = computed(() => data.value?.find((c) => c.id === channelId))
     const placeholder = computed(() => {
       if (channel.value?.user) {
         return `Message @${channel.value.user.username}`
@@ -58,29 +61,26 @@ export default defineComponent({
     })
 
     let timeout: number
-    // watch(text, () => {
-    //   if (!isTyping.value) {
-    //     isTyping.value = true
-    //     socket.emit('startTyping', channelId, userStore.current?.username)
-    //     timeout = setTimeout(() => {
-    //       isTyping.value = false
-    //       socket.emit('stopTyping', channelId, userStore.current?.username)
-    //     }, 2000)
-    //   } else {
-    //     clearTimeout(timeout)
-    //     timeout = setTimeout(() => {
-    //       isTyping.value = false
-    //       socket.emit('stopTyping', channelId, userStore.current?.username)
-    //     }, 2000)
-    //   }
-    // })
-
     const showPlaceholder = ref(true)
     function handleOnInput(e: any) {
       if (e.target.innerText.trim() !== '') {
         showPlaceholder.value = false
       } else {
         showPlaceholder.value = true
+      }
+      if (!isTyping.value) {
+        isTyping.value = true
+        socket.emit('startTyping', channelId, userStore.current?.username)
+        timeout = setTimeout(() => {
+          isTyping.value = false
+          socket.emit('stopTyping', channelId, userStore.current?.username)
+        }, 2000)
+      } else {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          isTyping.value = false
+          socket.emit('stopTyping', channelId, userStore.current?.username)
+        }, 2000)
       }
     }
 

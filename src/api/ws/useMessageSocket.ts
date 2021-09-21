@@ -96,6 +96,7 @@ export default function useMessageSocket(channelId: string, key: string) {
     })
 
     socket.on('removeFromTyping', (username: string) => {
+      console.log('removeFromTyping', username)
       if (username !== userStore.current?.username) {
         channelStore.removeTyping(username)
       }

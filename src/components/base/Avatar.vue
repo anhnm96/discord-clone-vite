@@ -6,18 +6,7 @@
       :alt="`${username}, ${isOnline ? 'Online' : 'Offline'}`"
     />
     <div
-      class="
-        absolute
-        grid
-        w-4
-        h-4
-        rounded-full
-        -bottom-1/4
-        -right-1/4
-        -translate-y-1/3 -translate-x-1/3
-        place-items-center
-        bg-primary
-      "
+      class="absolute grid w-4 h-4 rounded-full  -bottom-1/4 -right-1/4 -translate-y-1/3 -translate-x-1/3 place-items-center bg-primary"
     >
       <div v-if="isOnline" class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
       <div
@@ -39,6 +28,7 @@ export default defineComponent({
     img: {
       type: String,
       required: true,
+      default: '',
     },
     isOnline: {
       type: Boolean,
