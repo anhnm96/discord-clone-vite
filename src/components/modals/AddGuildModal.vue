@@ -6,9 +6,9 @@
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <div
-      class="relative w-screen max-w-md mx-auto overflow-hidden transition-all rounded-md  bg-primary text-primary"
+      class="relative w-screen max-w-md mx-auto overflow-hidden rounded-md  bg-primary"
     >
-      <transition-group :name="transition">
+      <transition :name="transition">
         <div v-if="showModal === 'select'" class="pt-4">
           <button
             class="absolute grid w-8 h-8 transition-colors  right-3 top-3 place-items-center hover:text-hover"
@@ -100,13 +100,13 @@
               >
               <Field
                 id="name"
-                v-model="guildName"
                 v-focus
                 name="name"
                 type="text"
+                :value="`${userStore.current?.username}'s server`"
                 class="p-2 border rounded  bg-input hover:border-input-hover border-input"
               />
-              <ErrorMessage class="text-red-400" name="id" />
+              <ErrorMessage class="text-red-400" name="name" />
             </div>
             <p class="text-xs text-muted">
               By creating a server, you agree to Discord's
@@ -139,7 +139,7 @@
             </div>
           </section>
         </Form>
-        <Form v-else class="pt-4" @submit="joinServer">
+        <Form v-else class="block pt-4" @submit="joinServer">
           <button
             class="absolute grid w-8 h-8 transition-colors  right-3 top-3 place-items-center hover:text-hover"
             aria-label="close"
@@ -200,7 +200,7 @@
             </div>
           </section>
         </Form>
-      </transition-group>
+      </transition>
     </div>
   </Modal>
 </template>
@@ -232,7 +232,6 @@ export default defineComponent({
     const cache = useQueryClient()
     const userStore = useUser()
     const showModal = ref('select')
-    const guildName = ref(`${userStore.current?.username}'s server`)
     const transition = ref('slide-left')
     const loading = ref(false)
 
@@ -281,11 +280,11 @@ export default defineComponent({
 
     return {
       showModal,
-      guildName,
       createServer,
       joinServer,
       transition,
       loading,
+      userStore,
     }
   },
 })

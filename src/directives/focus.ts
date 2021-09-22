@@ -1,5 +1,7 @@
 const mounted = (el: HTMLElement) => {
-  el.focus()
+  setTimeout(() => {
+    el.focus()
+  }, 300)
 }
 
 export default {
